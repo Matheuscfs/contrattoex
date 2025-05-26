@@ -1,0 +1,1 @@
+drop function if exists horarios_disponiveis(uuid, date, int); 
