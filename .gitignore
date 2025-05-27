@@ -38,3 +38,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Local Netlify folder
+.netlify
+
+# Google Cloud credentials
+*-key.json
+service-account-key.json
+claude-vertex-ai-key.json
