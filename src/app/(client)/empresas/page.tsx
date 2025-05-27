@@ -17,13 +17,28 @@ export default function EmpresasPage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative h-[600px] flex items-center justify-center bg-gradient-to-r from-primary/10 to-primary/5">
-        <div className="container px-4 md:px-6">
+      <section className="relative h-[600px] flex items-center justify-center overflow-hidden">
+        {/* Video Background */}
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover z-0"
+        >
+          <source src="/aperto-de-mao.mp4" type="video/mp4" />
+        </video>
+        
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-black/50 z-10"></div>
+        
+        {/* Content */}
+        <div className="container px-4 md:px-6 relative z-20">
           <div className="flex flex-col items-center space-y-4 text-center">
-            <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
+            <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none text-white">
               Expanda seu Negócio com o iServiços
             </h1>
-            <p className="mx-auto max-w-[700px] text-gray-500 md:text-xl dark:text-gray-400">
+            <p className="mx-auto max-w-[700px] text-white/90 md:text-xl">
               Conecte-se com mais clientes, gerencie seus agendamentos e aumente sua receita com nossa plataforma completa.
             </p>
             <div className="space-x-4">
@@ -33,7 +48,7 @@ export default function EmpresasPage() {
                 </Button>
               </Link>
               <Link href="#planos">
-                <Button variant="outline" size="lg">
+                <Button variant="outline" size="lg" className="bg-white/10 border-white/20 text-white hover:bg-white/20">
                   Ver Planos
                 </Button>
               </Link>

@@ -1,4 +1,4 @@
-export type UserRole = 'customer' | 'professional' | 'business' | 'admin';
+export type UserRole = 'customer' | 'professional' | 'company' | 'admin';
 export type DocumentStatus = 'pending' | 'approved' | 'rejected';
 
 export interface Address {

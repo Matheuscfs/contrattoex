@@ -5,6 +5,7 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { AuthProvider } from '@/contexts/AuthContext'
 import { NotificationProvider } from '@/components/notifications/NotificationProvider'
+import { QueryProvider } from '@/components/providers/QueryProvider'
 import { Toaster } from 'sonner';
 
 // Otimização de fonte com subset reduzido
@@ -50,18 +51,20 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className={`${inter.className} antialiased`}>
       <body>
-        <AuthProvider>
-          <NotificationProvider>
-            <div className="flex min-h-screen flex-col">
-              <Header />
-              <main className="flex-1 w-full">
-                {children}
-              </main>
-              <Footer />
-            </div>
-            <Toaster richColors position="top-right" />
-          </NotificationProvider>
-        </AuthProvider>
+        <QueryProvider>
+          <AuthProvider>
+            <NotificationProvider>
+              <div className="flex min-h-screen flex-col">
+                <Header />
+                <main className="flex-1 w-full">
+                  {children}
+                </main>
+                <Footer />
+              </div>
+              <Toaster richColors position="top-right" />
+            </NotificationProvider>
+          </AuthProvider>
+        </QueryProvider>
       </body>
     </html>
   );

@@ -3,12 +3,11 @@ const crypto = require('crypto');
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   env: {
-    NEXT_PUBLIC_PUSHER_KEY: 'fffe5c1d86e941f2a9f1',
-    NEXT_PUBLIC_PUSHER_CLUSTER: 'mt1',
-    PUSHER_APP_ID: '1997737',
-    PUSHER_SECRET: 'cc01febe822b861d2458',
-    NEXT_PUBLIC_SUPABASE_URL: 'https://ylngkqqhhgerpnmngloi.supabase.co',
-    NEXT_PUBLIC_SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlsbmdrcXFoaGdlcnBubW5nbG9pIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDgwNDY4NzcsImV4cCI6MjA2MzYyMjg3N30.MpiCigNYqg7ofupd3nOxCDZNSpnKMo210o4LUGxGGko'
+    NEXT_PUBLIC_PUSHER_KEY: process.env.NEXT_PUBLIC_PUSHER_KEY || 'fffe5c1d86e941f2a9f1',
+    NEXT_PUBLIC_PUSHER_CLUSTER: process.env.NEXT_PUBLIC_PUSHER_CLUSTER || 'mt1',
+    PUSHER_APP_ID: process.env.PUSHER_APP_ID || '1997737',
+    NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://ylngkqqhhgerpnmngloi.supabase.co',
+    NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlsbmdrcXFoaGdlcnBubW5nbG9pIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDgwNDY4NzcsImV4cCI6MjA2MzYyMjg3N30.MpiCigNYqg7ofupd3nOxCDZNSpnKMo210o4LUGxGGko'
   },
   images: {
     unoptimized: false,
@@ -44,6 +43,11 @@ const nextConfig = {
         hostname: "ylngkqqhhgerpnmngloi.supabase.co",
         pathname: "/storage/v1/object/public/**",
       },
+      {
+        protocol: "https",
+        hostname: "i.pravatar.cc",
+        pathname: "/**",
+      },
     ],
   },
   compress: true,
@@ -56,24 +60,6 @@ const nextConfig = {
   experimental: {
     optimizeCss: true,
     scrollRestoration: true,
-  },
-  // Configuração para domínio customizado
-  async headers() {
-    return [
-      {
-        source: '/(.*)',
-        headers: [
-          {
-            key: 'X-DNS-Prefetch-Control',
-            value: 'on'
-          },
-          {
-            key: 'Strict-Transport-Security',
-            value: 'max-age=63072000; includeSubDomains; preload'
-          }
-        ],
-      },
-    ]
   },
   webpack: (config, { isServer }) => {
     // Suprime o aviso de depreciação do punycode

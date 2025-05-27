@@ -124,6 +124,24 @@ const empresasData: Record<string, Company> = {
         estimatedDuration: { value: 4, unit: 'hour' },
         category: 'Instalação',
         images: ['https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=500&auto=format&fit=crop&q=60']
+      },
+      {
+        id: '2',
+        name: 'Manutenção Preventiva Elétrica',
+        description: 'Verificação e manutenção preventiva de instalações elétricas',
+        price: { value: 80, unit: 'hour' },
+        estimatedDuration: { value: 2, unit: 'hour' },
+        category: 'Manutenção',
+        images: ['https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=500&auto=format&fit=crop&q=60']
+      },
+      {
+        id: '3',
+        name: 'Instalação de Lustres e Luminárias',
+        description: 'Instalação profissional de lustres, luminárias e spots',
+        price: { value: 100, unit: 'hour' },
+        estimatedDuration: { value: 1, unit: 'hour' },
+        category: 'Instalação',
+        images: ['https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=500&auto=format&fit=crop&q=60']
       }
     ]
   }
@@ -237,7 +255,7 @@ export default function CompanyProfilePage({ params }: { params: { id: string } 
 
         {/* Serviços */}
         <div className="mb-6">
-          <CompanyServices services={empresa.servicos} />
+          <CompanyServices services={empresa.servicos} empresaId={empresaId} />
         </div>
 
         {/* Avaliações */}

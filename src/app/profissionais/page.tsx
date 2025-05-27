@@ -8,6 +8,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useState, useRef } from 'react';
+import { useProfessionals } from '@/hooks/api/useProfessionals';
+import { ProfessionalFilters } from '@/components/filters/ProfessionalFilters';
 
 const categorias = [
   {
@@ -241,22 +243,12 @@ function ProfissionalCardSkeleton() {
 
 // Componente que carrega os dados dos profissionais
 function ProfissionaisList({ categoria }: { categoria: string }) {
-  const [profissionais, setProfissionais] = React.useState(profissionaisData);
-  const [isLoading, setIsLoading] = React.useState(true);
+  const { data: profissionaisData, isLoading, error } = useProfessionals({
+    specialty: categoria !== 'todos' ? categoria : undefined,
+    limit: 12
+  });
 
-  React.useEffect(() => {
-    // Simula o carregamento dos dados
-    setIsLoading(true);
-    const timer = setTimeout(() => {
-      const filtered = categoria === 'todos' 
-        ? profissionaisData
-        : profissionaisData.filter(p => p.profissao.toLowerCase() === categoria.slice(0, -1).toLowerCase());
-      setProfissionais(filtered);
-      setIsLoading(false);
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, [categoria]);
+  const profissionais = profissionaisData?.data || [];
 
   if (isLoading) {
     return (
@@ -264,6 +256,30 @@ function ProfissionaisList({ categoria }: { categoria: string }) {
         {Array(6).fill(0).map((_, i) => (
           <ProfissionalCardSkeleton key={i} />
         ))}
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-12">
+        <div className="text-red-500 mb-4">
+          <Briefcase className="w-16 h-16 mx-auto mb-4 opacity-50" />
+          <h3 className="text-xl font-semibold mb-2">Erro ao carregar profissionais</h3>
+          <p>Tente novamente mais tarde.</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (profissionais.length === 0) {
+    return (
+      <div className="text-center py-12">
+        <div className="text-gray-500 mb-4">
+          <Briefcase className="w-16 h-16 mx-auto mb-4 opacity-50" />
+          <h3 className="text-xl font-semibold mb-2">Nenhum profissional encontrado</h3>
+          <p>Tente ajustar os filtros ou buscar por outra categoria.</p>
+        </div>
       </div>
     );
   }
@@ -281,24 +297,15 @@ function ProfissionaisList({ categoria }: { categoria: string }) {
         >
           {/* Cabeçalho com Foto e Badge */}
           <div className="relative">
-            {profissional.destaque && (
-              <div 
-                className="absolute top-3 left-0 bg-red-600 text-white text-xs py-1 px-3 z-10"
-                role="status"
-                aria-label={`Profissional em destaque: ${profissional.destaque}`}
-              >
-                {profissional.destaque}
-              </div>
-            )}
             <div className="p-4 flex items-center gap-4">
               <div 
                 className="relative w-24 h-24 rounded-full overflow-hidden"
                 role="img"
-                aria-label={`Foto de perfil de ${profissional.nome}`}
+                aria-label={`Foto de perfil de ${profissional.name}`}
               >
                 <Image
-                  src={profissional.imagem}
-                  alt={`Foto de ${profissional.nome}`}
+                  src={profissional.avatar || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=500&auto=format&fit=crop&q=60'}
+                  alt={`Foto de ${profissional.name}`}
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   priority={index < 3}
@@ -308,35 +315,33 @@ function ProfissionaisList({ categoria }: { categoria: string }) {
               
               <div>
                 <h3 className="font-semibold flex items-center gap-2">
-                  {profissional.nome}
-                  {profissional.profissionalVerificado && (
-                    <svg 
-                      xmlns="http://www.w3.org/2000/svg" 
-                      width="16" 
-                      height="16" 
-                      viewBox="0 0 24 24" 
-                      fill="#ea1d2c" 
-                      stroke="white" 
-                      strokeWidth="2" 
-                      strokeLinecap="round" 
-                      strokeLinejoin="round"
-                      role="img"
-                      aria-label="Profissional verificado"
-                    >
-                      <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path>
-                      <path d="m9 12 2 2 4-4"></path>
-                    </svg>
-                  )}
+                  {profissional.name}
+                  <svg 
+                    xmlns="http://www.w3.org/2000/svg" 
+                    width="16" 
+                    height="16" 
+                    viewBox="0 0 24 24" 
+                    fill="#ea1d2c" 
+                    stroke="white" 
+                    strokeWidth="2" 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round"
+                    role="img"
+                    aria-label="Profissional verificado"
+                  >
+                    <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path>
+                    <path d="m9 12 2 2 4-4"></path>
+                  </svg>
                 </h3>
-                <p className="text-sm text-gray-600">{profissional.profissao}</p>
+                <p className="text-sm text-gray-600">{profissional.specialties?.[0] || 'Profissional'}</p>
                 <div 
                   className="flex items-center mt-1"
                   role="group"
-                  aria-label={`Avaliação: ${profissional.rating} de 5 estrelas, ${profissional.reviews} avaliações`}
+                  aria-label={`Avaliação: ${profissional.stats.averageRating} de 5 estrelas, ${profissional.stats.totalReviews} avaliações`}
                 >
                   <Star size={14} className="text-yellow-500 fill-current" aria-hidden="true" />
-                  <span className="text-sm ml-1">{profissional.rating}</span>
-                  <span className="text-sm text-gray-500 ml-1">({profissional.reviews})</span>
+                  <span className="text-sm ml-1">{profissional.stats.averageRating || 0}</span>
+                  <span className="text-sm text-gray-500 ml-1">({profissional.stats.totalReviews || 0})</span>
                 </div>
               </div>
             </div>
@@ -347,40 +352,39 @@ function ProfissionaisList({ categoria }: { categoria: string }) {
             <div 
               className="flex items-center text-sm text-gray-500 mb-2"
               role="group"
-              aria-label={`Experiência: ${profissional.tempoMedioAtendimento}`}
+              aria-label="Disponibilidade"
             >
               <Clock size={14} className="mr-1" aria-hidden="true" />
-              <span>{profissional.tempoMedioAtendimento}</span>
+              <span>Disponível</span>
             </div>
             <div 
               className="flex items-center text-sm text-gray-500 mb-2"
               role="group"
-              aria-label={`Localização: ${profissional.distancia} de distância`}
+              aria-label={`Localização: ${profissional.location}`}
             >
               <MapPin size={14} className="mr-1" aria-hidden="true" />
-              <span>{profissional.distancia}</span>
+              <span>{typeof profissional.location === 'string' ? profissional.location : 'Localização não informada'}</span>
             </div>
             <div className="flex justify-between items-center mt-4">
               <div>
                 <p 
                   className="font-medium"
                   role="text"
-                  aria-label={`Valor: ${profissional.precoHora}${profissional.precoHora !== 'Sob consulta' ? ' por hora' : ''}`}
+                  aria-label="Valor sob consulta"
                 >
-                  {profissional.precoHora}
-                  {profissional.precoHora !== 'Sob consulta' && <span className="text-sm text-gray-500">/hora</span>}
+                  Sob consulta
                 </p>
                 <p 
                   className="text-sm text-green-600"
                   role="status"
-                  aria-label={`Status: ${profissional.profissionalVerificado ? 'Disponível' : 'Indisponível'}`}
+                  aria-label="Status: Disponível"
                 >
-                  {profissional.profissionalVerificado ? 'Disponível' : 'Indisponível'}
+                  Disponível
                 </p>
               </div>
               <Button 
                 className="bg-ifood-red hover:bg-red-700 text-white focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
-                aria-label={`Contratar ${profissional.nome}`}
+                aria-label={`Contratar ${profissional.name}`}
               >
                 Contratar
               </Button>
@@ -397,6 +401,32 @@ export default function ProfissionaisPage() {
   const [subcategoriaAtiva, setSubcategoriaAtiva] = useState('todas');
   const [searchTerm, setSearchTerm] = React.useState('');
   const categoriasContainerRef = useRef<HTMLDivElement>(null);
+  
+  // Estado dos filtros avançados
+  const [filters, setFilters] = useState({
+    search: '',
+    location: '',
+    category: '',
+    minRating: 0,
+    maxPrice: 1000,
+    availability: '',
+    specialties: [] as string[]
+  });
+
+  const clearFilters = () => {
+    setFilters({
+      search: '',
+      location: '',
+      category: '',
+      minRating: 0,
+      maxPrice: 1000,
+      availability: '',
+      specialties: []
+    });
+    setCategoriaAtiva('todos');
+    setSubcategoriaAtiva('todas');
+    setSearchTerm('');
+  };
 
   const scrollCategories = (direction: 'left' | 'right') => {
     if (categoriasContainerRef.current) {
@@ -428,15 +458,29 @@ export default function ProfissionaisPage() {
   };
 
   const profissionaisFiltrados = profissionaisData.filter(profissional => {
+    // Filtros de categoria (mantendo compatibilidade)
     const matchesCategoria = categoriaAtiva === 'todos' || profissional.categoriaMain === categoriaAtiva;
     const matchesSubcategoria = subcategoriaAtiva === 'todas' || profissional.categoria === subcategoriaAtiva;
-    const matchesSearch = searchTerm === '' || 
-      profissional.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      profissional.profissao.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      profissional.descricao.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      profissional.servicosDestaque.some(s => s.toLowerCase().includes(searchTerm.toLowerCase()));
     
-    return matchesCategoria && matchesSubcategoria && matchesSearch;
+    // Filtros avançados
+    const matchesSearch = (filters.search === '' && searchTerm === '') || 
+      profissional.nome.toLowerCase().includes((filters.search || searchTerm).toLowerCase()) ||
+      profissional.profissao.toLowerCase().includes((filters.search || searchTerm).toLowerCase()) ||
+      profissional.descricao.toLowerCase().includes((filters.search || searchTerm).toLowerCase()) ||
+      profissional.servicosDestaque.some(s => s.toLowerCase().includes((filters.search || searchTerm).toLowerCase()));
+    
+    const matchesCategory = filters.category === '' || profissional.categoriaMain === filters.category;
+    const matchesRating = profissional.rating >= filters.minRating;
+    
+    // Filtro de especialidades
+    const matchesSpecialties = filters.specialties.length === 0 || 
+      filters.specialties.some(specialty => 
+        profissional.profissao.toLowerCase().includes(specialty.toLowerCase()) ||
+        profissional.servicosDestaque.some(s => s.toLowerCase().includes(specialty.toLowerCase()))
+      );
+    
+    return matchesCategoria && matchesSubcategoria && matchesSearch && 
+           matchesCategory && matchesRating && matchesSpecialties;
   });
 
   return (
@@ -510,32 +554,12 @@ export default function ProfissionaisPage() {
       <div className="container mx-auto px-4 py-6">
         <h1 className="text-2xl font-bold mb-4">Profissionais em sua região</h1>
         
-        {/* Filtros e Busca */}
-        <div className="flex flex-col md:flex-row justify-between mb-6 gap-4">
-          <div className="flex space-x-4">
-            <Button variant="outline" className="flex items-center gap-2">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className=""><path d="M3 6h18"></path><path d="M7 12h10"></path><path d="M11 18h4"></path></svg>
-              Filtros
-            </Button>
-            <Button variant="outline" className="flex items-center gap-2">
-              Ordenar
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className=""><path d="m3 16 4 4 4-4"></path><path d="M7 20V4"></path><path d="m21 8-4-4-4 4"></path><path d="M17 4v16"></path></svg>
-            </Button>
-            <Button variant="outline" className="flex items-center gap-2">
-              Distância
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className=""><path d="m6 9 6 6 6-6"></path></svg>
-            </Button>
-          </div>
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
-            <Input
-              placeholder="Buscar profissionais"
-              className="pl-10 w-full md:w-64"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
-        </div>
+        {/* Filtros Avançados */}
+        <ProfessionalFilters 
+          filters={filters}
+          onFiltersChange={setFilters}
+          onClearFilters={clearFilters}
+        />
         
         {/* Lista de Profissionais */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

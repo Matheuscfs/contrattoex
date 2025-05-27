@@ -151,16 +151,16 @@ export function ReviewList({
         <div className="flex items-center justify-between gap-4">
           <div className="flex items-center gap-2">
             <Select
-              value={String(filters.rating || '')}
+              value={String(filters.rating || 'all')}
               onValueChange={(value) =>
-                handleFilterChange({ rating: value ? Number(value) : undefined })
+                handleFilterChange({ rating: value === 'all' ? undefined : Number(value) })
               }
             >
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Filtrar por nota" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Todas as notas</SelectItem>
+                <SelectItem value="all">Todas as notas</SelectItem>
                 {[5, 4, 3, 2, 1].map((rating) => (
                   <SelectItem key={rating} value={String(rating)}>
                     <div className="flex items-center gap-2">

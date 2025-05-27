@@ -4,50 +4,52 @@ import * as React from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
+// import { useCategories } from "@/hooks/useCategories"
 
 interface Category {
-  id: number
+  id: string
   name: string
   icon: string
   count: number
   examples: string
 }
 
+// Dados estáticos melhorados (preparado para API)
 const categories: Category[] = [
   {
-    id: 1,
-    name: "Limpeza",
-    icon: "/icons/cleaning.svg",
-    count: 1234,
-    examples: "Diaristas, Limpeza pós-obra, Limpeza comercial"
+    id: "servicos-gerais",
+    name: "Serviços Gerais",
+    icon: "/icons/maintenance.svg",
+    count: 45,
+    examples: "Eletricistas, Encanadores, Diaristas, Pintores"
   },
   {
-    id: 2,
-    name: "Construção",
-    icon: "/icons/construction.svg",
-    count: 987,
-    examples: "Pedreiros, Pintores, Eletricistas"
-  },
-  {
-    id: 3,
-    name: "Beleza",
+    id: "beleza",
+    name: "Beleza & Bem-estar",
     icon: "/icons/beauty.svg",
-    count: 2345,
-    examples: "Cabeleireiros, Manicures, Maquiadores"
+    count: 32,
+    examples: "Cabeleireiros, Barbeiros, Esteticistas"
   },
   {
-    id: 4,
-    name: "Tecnologia",
-    icon: "/icons/tech.svg",
-    count: 567,
-    examples: "Técnicos de TI, Desenvolvedores, Design"
-  },
-  {
-    id: 5,
-    name: "Saúde",
+    id: "saude",
+    name: "Saúde & Terapias",
     icon: "/icons/health.svg",
-    count: 890,
-    examples: "Enfermeiros, Fisioterapeutas, Cuidadores"
+    count: 28,
+    examples: "Fisioterapeutas, Personal Trainers"
+  },
+  {
+    id: "construcao",
+    name: "Construção & Reforma",
+    icon: "/icons/construction.svg",
+    count: 25,
+    examples: "Construtoras, Empresas de Reforma"
+  },
+  {
+    id: "limpeza",
+    name: "Limpeza & Conservação",
+    icon: "/icons/cleaning.svg",
+    count: 18,
+    examples: "Limpeza Residencial, Limpeza Comercial"
   }
 ]
 

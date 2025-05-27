@@ -173,13 +173,14 @@ export function BaseFilter({
                   )}
                   {config.type === 'select' && config.options && (
                     <Select
-                      value={filters[config.id] || ''}
-                      onValueChange={(value) => handleFilterChange(config.id, value)}
+                      value={filters[config.id] || 'all'}
+                      onValueChange={(value) => handleFilterChange(config.id, value === 'all' ? '' : value)}
                     >
                       <SelectTrigger>
                         <SelectValue placeholder={config.placeholder} />
                       </SelectTrigger>
                       <SelectContent>
+                        <SelectItem value="all">Todos</SelectItem>
                         {config.options.map((option) => (
                           <SelectItem key={option.value} value={option.value}>
                             {option.label}
@@ -211,13 +212,14 @@ export function BaseFilter({
                   )}
                   {config.type === 'boolean' && (
                     <Select
-                      value={filters[config.id]?.toString() || ''}
-                      onValueChange={(value) => handleFilterChange(config.id, value === 'true')}
+                      value={filters[config.id]?.toString() || 'all'}
+                      onValueChange={(value) => handleFilterChange(config.id, value === 'all' ? undefined : value === 'true')}
                     >
                       <SelectTrigger>
                         <SelectValue placeholder={config.placeholder} />
                       </SelectTrigger>
                       <SelectContent>
+                        <SelectItem value="all">Todos</SelectItem>
                         <SelectItem value="true">Sim</SelectItem>
                         <SelectItem value="false">Não</SelectItem>
                       </SelectContent>

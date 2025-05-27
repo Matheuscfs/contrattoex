@@ -132,10 +132,18 @@ export default function LoginPage() {
         console.log('Perfil carregado:', profile);
 
         const userRole = profile.role || 'customer';
-        const redirectPath = searchParams.get('from') || 
-          `/${userRole === 'business' ? 'empresa' : userRole === 'professional' ? 'profissional' : 'cliente'}/perfil`;
+        const roleNames = {
+          'customer': 'Cliente',
+          'professional': 'Profissional', 
+          'company': 'Empresa'
+        };
         
-        toast.success('Login realizado com sucesso!');
+        const redirectPath = searchParams.get('from') || 
+          `/${userRole === 'company' ? 'empresa' : userRole === 'professional' ? 'profissional' : 'cliente'}/perfil`;
+        
+        toast.success(`Login realizado com sucesso! Bem-vindo(a), ${profile.name} (${roleNames[userRole as keyof typeof roleNames] || userRole})`);
+        
+        console.log('Redirecionando para:', redirectPath);
         router.push(redirectPath);
         router.refresh();
       } catch (profileError) {
@@ -228,14 +236,24 @@ export default function LoginPage() {
           </Button>
         </form>
 
-        <div className="text-center text-sm">
-          Não tem uma conta?{' '}
-          <Link 
-            href="/cadastro/cliente" 
-            className="underline underline-offset-4 hover:text-primary"
-          >
-            Cadastre-se
-          </Link>
+        <div className="text-center text-sm space-y-2">
+          <div>
+            Não tem uma conta?{' '}
+            <Link 
+              href="/cadastro/cliente" 
+              className="underline underline-offset-4 hover:text-primary"
+            >
+              Cadastre-se como Cliente
+            </Link>
+          </div>
+          <div>
+            <Link 
+              href="/cadastro/profissional-empresa" 
+              className="underline underline-offset-4 hover:text-primary text-xs"
+            >
+              Cadastro para Profissionais e Empresas
+            </Link>
+          </div>
         </div>
       </div>
     </div>

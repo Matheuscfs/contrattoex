@@ -133,112 +133,28 @@ export function CadastroEmpresaForm() {
     try {
       setLoading(true)
 
-      // Criar usuário
-      const { data: authData, error: authError } = await supabase.auth.signUp({
-        email: formData.email,
-        password: formData.password
+      // Enviar dados para a API de cadastro
+      const response = await fetch('/api/companies/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
       })
 
-      if (authError) {
-        console.error('Erro ao criar usuário:', authError)
-        if (authError.message.includes('already registered')) {
-          toast.error('Este e-mail já está cadastrado')
-        } else if (authError.message.includes('valid email')) {
-          toast.error('E-mail inválido')
-        } else {
-          toast.error('Erro ao criar usuário. Tente novamente.')
-        }
+      const result = await response.json()
+
+      if (!response.ok) {
+        toast.error(result.error || 'Erro ao realizar cadastro')
         return
       }
 
-      if (!authData.user) {
-        console.error('Usuário não criado')
-        toast.error('Erro ao criar usuário. Tente novamente.')
-        return
+      if (result.success) {
+        toast.success(result.message)
+        router.push('/empresas/login?message=cadastro-realizado')
+      } else {
+        toast.error('Erro inesperado ao realizar cadastro')
       }
-
-      // Se chegou aqui, o usuário foi criado com sucesso
-      console.log('Usuário criado:', authData.user)
-
-      // Criar empresa
-      const { data: company, error: companyError } = await supabase
-        .from('companies')
-        .insert({
-          name: formData.name,
-          cnpj: formData.cnpj,
-          business_type: formData.business_type,
-          plan_type: formData.plan_type,
-          email: formData.email,
-          status: 'pending',
-          user_id: authData.user.id
-        })
-        .select()
-        .single()
-
-      if (companyError) {
-        console.error('Erro ao criar empresa:', companyError)
-        toast.error('Erro ao criar empresa. Tente novamente.')
-        return
-      }
-
-      // Se chegou aqui, a empresa foi criada com sucesso
-      console.log('Empresa criada:', company)
-
-      // Criar endereço
-      const { error: addressError } = await supabase
-        .from('company_addresses')
-        .insert({
-          company_id: company.id,
-          postal_code: formData.postal_code,
-          street: formData.street,
-          number: formData.number,
-          complement: formData.complement,
-          neighborhood: formData.neighborhood,
-          city: formData.city,
-          state: formData.state
-        })
-
-      if (addressError) {
-        console.error('Erro ao criar endereço:', addressError)
-        toast.error('Erro ao criar endereço. Tente novamente.')
-        return
-      }
-
-      // Criar contatos
-      const { error: contactError } = await supabase
-        .from('company_contacts')
-        .insert({
-          company_id: company.id,
-          phone: formData.phone,
-          email: formData.email,
-          whatsapp: formData.whatsapp,
-          website: formData.website
-        })
-
-      if (contactError) {
-        console.error('Erro ao criar contatos:', contactError)
-        toast.error('Erro ao criar contatos. Tente novamente.')
-        return
-      }
-
-      // Criar horários de funcionamento
-      const { error: hoursError } = await supabase
-        .from('company_business_hours')
-        .insert(
-          formData.business_hours.map(hour => ({
-            company_id: company.id,
-            ...hour
-          }))
-        )
-
-      if (hoursError) {
-        console.error('Erro ao criar horários:', hoursError)
-        toast.error('Erro ao criar horários. Tente novamente.')
-        return
-      }
-
-      toast.success('Cadastro realizado com sucesso! Verifique seu e-mail para confirmar sua conta.')
-      router.push('/empresas/login')
     } catch (error) {
       console.error('Erro ao cadastrar empresa:', error)
       toast.error('Erro ao realizar cadastro. Tente novamente.')

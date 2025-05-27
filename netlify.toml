@@ -10,20 +10,3 @@
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
-
-# Configurações de domínio customizado
-[[redirects]]
-  from = "https://www.contrattoex.com/*"
-  to = "https://contrattoex.com/:splat"
-  status = 301
-  force = true
-
-# Headers de segurança
-[[headers]]
-  for = "/*"
-  [headers.values]
-    X-Frame-Options = "DENY"
-    X-XSS-Protection = "1; mode=block"
-    X-Content-Type-Options = "nosniff"
-    Referrer-Policy = "strict-origin-when-cross-origin"
-    Permissions-Policy = "camera=(), microphone=(), geolocation=()"

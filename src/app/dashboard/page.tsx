@@ -23,7 +23,7 @@ export default function DashboardPage() {
       console.log('Redirecionando usuário do dashboard principal:', { userRole, userId: user.id })
 
       // Redirecionar para o dashboard apropriado
-      if (userRole === 'business') {
+      if (userRole === 'company') {
         router.push('/dashboard/empresa')
       } else if (userRole === 'professional') {
         router.push('/dashboard/profissional')

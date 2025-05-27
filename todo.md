@@ -383,6 +383,50 @@
     - [x] Grid de 3+ colunas
     - [x] Layout expandido
 
+### 21. Integração Claude AI via Google Cloud Vertex AI
+- [x] Configuração e Setup
+  - [x] Instalação das dependências (@google-cloud/aiplatform, @google-cloud/vertexai)
+  - [x] Configuração das variáveis de ambiente
+  - [x] Setup do Google Cloud Project
+  - [x] Criação da Service Account
+- [x] Biblioteca de Integração
+  - [x] Classe ClaudeVertexAI para comunicação com a API
+  - [x] Configuração dos modelos (Claude Opus 4, Sonnet 4, Haiku)
+  - [x] Sistema de autenticação com Google Cloud
+  - [x] Tratamento de erros e rate limiting
+  - [x] Suporte a diferentes tipos de operações (chat, análise, geração)
+- [x] API Routes
+  - [x] Endpoint /api/claude para operações gerais
+  - [x] Suporte a chat conversacional
+  - [x] Análise de texto (sentimento, resumo, palavras-chave)
+  - [x] Geração de código
+  - [x] Validação de entrada e tratamento de erros
+- [x] Hooks React
+  - [x] useClaude para operações gerais
+  - [x] useClaudeChat para conversas
+  - [x] Estados de loading e error handling
+  - [x] Configurações personalizáveis (modelo, temperatura, tokens)
+- [x] Componentes UI
+  - [x] ClaudeChat - Interface completa de chat
+  - [x] Suporte a múltiplos modelos Claude
+  - [x] Análise de texto integrada
+  - [x] Geração de código com syntax highlighting
+  - [x] Interface responsiva e acessível
+- [x] Página de Teste
+  - [x] /teste-claude para demonstração
+  - [x] Exemplos de uso
+  - [x] Documentação integrada
+- [x] Documentação
+  - [x] Guia completo de configuração
+  - [x] Instruções de setup do Google Cloud
+  - [x] Exemplos de uso
+  - [x] Troubleshooting
+- [x] Segurança
+  - [x] Proteção de credenciais no .gitignore
+  - [x] Validação de variáveis de ambiente
+  - [x] Rate limiting básico
+  - [x] Sanitização de inputs
+
 ## 🚨 PRIORIDADE 1 - ESSENCIAL PARA LANÇAMENTO
 
 ### 1. Correções Críticas de Roteamento
@@ -613,10 +657,366 @@
 3. ~~Criar sistema de cadastro e gestão de serviços~~ ✅
 4. ~~Implementar visibilidade controlada de perfis e serviços~~ ✅
 5. ~~Iniciar correções de roteamento (conflitos atuais)~~ ✅
-6. Implementar sistema de pagamento (Mercado Pago)
-7. Finalizar funcionalidades core (agendamento)
-8. ~~Otimizar performance crítica (lazy loading)~~ ✅
-9. Preparar checklist de lançamento
+6. ~~Substituir dados mockados por dados reais (ETAPA 2)~~ ✅
+7. **ETAPA 3 - Implementar APIs adicionais e otimizações** ✅ CONCLUÍDA
+   - [x] Hook useCategories criado
+   - [x] Categorias atualizadas com dados mais realistas
+   - [x] Componente ProfessionalFilters criado
+   - [x] Filtros avançados integrados na página de profissionais
+   - [x] Lógica de filtros aprimorada
+   - [ ] API de categorias (problema de roteamento - para resolver futuramente)
+8. Implementar sistema de pagamento (Mercado Pago)
+9. Finalizar funcionalidades core (agendamento)
+10. ~~Otimizar performance crítica (lazy loading)~~ ✅
+11. Preparar checklist de lançamento
+
+## 🚀 ETAPA 3 - PRÓXIMAS IMPLEMENTAÇÕES
+
+### 1. APIs Restantes (Prioridade Alta)
+- [ ] **API de Categorias** (`/api/categories`)
+  - [ ] Categorias de profissionais
+  - [ ] Categorias de empresas
+  - [ ] Subcategorias e hierarquia
+  - [ ] Contadores de profissionais/empresas por categoria
+
+### 2. Páginas Restantes com Dados Mockados (Prioridade Alta)
+- [ ] **Página de Empresas** (`src/app/(client)/empresas`)
+  - [ ] Substituir dados mockados por API real
+  - [ ] Implementar filtros e busca
+  - [ ] Loading states e error handling
+
+- [ ] **Detalhes de Empresa** (`src/app/(client)/empresas/[id]`)
+  - [ ] Conectar com API de detalhes
+  - [ ] Serviços da empresa
+  - [ ] Avaliações e reviews
+
+### 3. Sistema de Promoções (Prioridade Média)
+- [ ] **API de Promoções** (`/api/promotions`)
+  - [ ] Listagem de promoções ativas
+  - [ ] Detalhes de promoção
+  - [ ] Filtros por categoria e localização
+
+### 4. Dashboards com Dados Reais (Prioridade Média)
+- [ ] **Dashboard Empresa**
+  - [ ] Métricas reais de agendamentos
+  - [ ] Faturamento calculado
+  - [ ] Gráficos com dados reais
+
+- [ ] **Dashboard Cliente**
+  - [ ] Agendamentos reais
+  - [ ] Favoritos reais
+  - [ ] Histórico de avaliações
+
+## ✅ ETAPA 2 - SUBSTITUIÇÃO DE DADOS MOCKADOS (CONCLUÍDA)
+
+### 1. APIs Implementadas e Funcionais
+- [x] **API de Empresas** (`/api/companies`)
+  - [x] Listagem com filtros (busca, categoria, localização)
+  - [x] Paginação e ordenação por rating
+  - [x] Detalhes completos (`/api/companies/[id]`)
+  - [x] Serviços por empresa (`/api/companies/[id]/services`)
+  - [x] Avaliações por empresa (`/api/companies/[id]/reviews`)
+
+- [x] **API de Profissionais** (`/api/professionals`)
+  - [x] Listagem com filtros e dados do perfil
+  - [x] Detalhes completos (`/api/professionals/[id]`)
+  - [x] Avaliações por profissional (`/api/professionals/[id]/reviews`)
+
+### 2. Sistema de Cache Implementado
+- [x] **React Query** configurado e otimizado
+  - [x] 5min staleTime, 10min gcTime
+  - [x] Retry inteligente
+  - [x] QueryProvider integrado no layout
+  - [x] Hooks customizados para todas as APIs
+  - [x] Query keys estruturadas para invalidação eficiente
+  - [x] Tipagem TypeScript completa
+
+### 3. Páginas Atualizadas com Dados Reais
+- [x] **Página Inicial** (`src/app/page.tsx`)
+  - [x] Seção "Profissionais em Destaque" usando API real
+  - [x] Loading states com skeleton
+  - [x] Error handling implementado
+  - [x] Dados mockados removidos
+
+- [x] **Página de Profissionais** (`src/app/profissionais/page.tsx`)
+  - [x] Lista de profissionais usando API real
+  - [x] Filtros por especialidade funcionais
+  - [x] Loading states e error handling
+  - [x] Cards adaptados para interface Professional
+  - [x] Navegação e busca mantidas
+
+### 4. Banco de Dados Populado
+- [x] **5 empresas** com dados completos
+- [x] **7 serviços** distribuídos entre empresas
+- [x] **3 profissionais** com especialidades
+- [x] **Endereços** com coordenadas para SP, Florianópolis, Curitiba
+- [x] **Contatos** (telefone, email, WhatsApp, website)
+- [x] **Horários de funcionamento** variados
+- [x] **Avaliações de exemplo** para testar reviews
+
+## 🗂️ DADOS MOCKADOS RESTANTES PARA SUBSTITUIR
+
+### 1. Dados Mockados Identificados (Pendentes)
+
+#### 1.1 Homepage e Categorias (Parcialmente Concluído)
+- **Arquivo**: `src/app/page.tsx`
+  - [x] ~~Profissionais em destaque~~ ✅ CONCLUÍDO
+  - [ ] Categorias de profissionais (9 categorias com ícones e exemplos)
+- **Arquivo**: `src/components/home/HeroBanner.tsx`
+  - [ ] Banner principal com imagens e textos promocionais
+
+#### 1.2 Promoções
+- **Arquivo**: `src/components/promotions/PromotionsSection.tsx`
+  - **Linha 5**: `mockPromotions` - 6 promoções com imagens, preços, descontos
+- **Arquivo**: `src/app/promocoes/page.tsx`
+  - **Linha 9**: Lista completa de promoções para página de listagem
+- **Arquivo**: `src/app/promocoes/[id]/page.tsx`
+  - **Linha 18**: Detalhes específicos de cada promoção
+- **Arquivo**: `src/app/empresa/promocoes/page.tsx`
+  - **Linha 22**: `mockPromotions` - dados para dashboard da empresa
+
+#### 1.3 Serviços e Empresas
+- **Arquivo**: `src/app/(client)/empresas/[id]/servicos/[servicoId]/page.tsx`
+  - **Linha 66**: `mockServiceData` - 3 serviços detalhados (Eletrotec)
+  - **Linha 179**: `mockCompanyData` - dados da empresa Eletrotec
+- **Arquivo**: `src/app/servicos/[id]/page.tsx`
+  - **Linha 82**: `mockServiceDetails` - detalhes completos de serviços
+- **Arquivo**: `src/app/(client)/empresas/[id]/perfil/page.tsx`
+  - **Linha 75**: Dados mockados das empresas com serviços, avaliações, horários
+
+#### 1.4 Perfis de Usuário
+- **Arquivo**: `src/app/perfil/[type]/[id]/page.tsx`
+  - **Linha 80**: `mockProfileData` - dados de profissional individual
+  - **Linha 157**: `mockCompanyData` - dados de empresa
+- **Arquivo**: `src/components/analytics/ProfileAnalytics.tsx`
+  - **Linha 62**: `mockData` - métricas de analytics (visualizações, solicitações, clientes)
+  - **Linha 94**: `mockProfileInfo` - informações do perfil profissional
+
+#### 1.5 Dashboard Empresa
+- **Arquivo**: `src/app/empresa/page.tsx`
+  - **Linha 69**: `mockData` - métricas do dashboard (agendamentos, faturamento, avaliações)
+- **Arquivo**: `src/app/empresa/promocoes/page.tsx`
+  - **Linha 22**: Promoções específicas da empresa
+
+## 🎯 ETAPA 3 - IMPLEMENTAÇÕES REALIZADAS ✅ CONCLUÍDA
+
+### 3.1 Componente de Filtros Avançados
+- **Arquivo criado**: `src/components/filters/ProfessionalFilters.tsx`
+- **Funcionalidades implementadas**:
+  - Filtros básicos: busca, localização, categoria
+  - Filtros avançados: avaliação mínima, preço máximo, disponibilidade
+  - Seleção de especialidades com interface intuitiva
+  - Filtros expansíveis/recolhíveis
+  - Botão para limpar todos os filtros
+  - Interface responsiva e acessível
+
+### 3.2 Atualização das Categorias
+- **Arquivo modificado**: `src/components/home/Categories.tsx`
+- **Melhorias implementadas**:
+  - Dados mais realistas baseados no banco de dados
+  - IDs consistentes com a estrutura da API
+  - Contadores de profissionais atualizados
+  - Preparação para integração futura com API de categorias
+
+### 3.3 Integração de Filtros na Página de Profissionais
+- **Arquivo modificado**: `src/app/profissionais/page.tsx`
+- **Funcionalidades adicionadas**:
+  - Estado de filtros avançados
+  - Integração do componente ProfessionalFilters
+  - Lógica de filtros aprimorada
+  - Compatibilidade com filtros existentes
+  - Função para limpar todos os filtros
+
+### 3.4 Hook de Categorias
+- **Arquivo criado**: `src/hooks/useCategories.ts`
+- **Funcionalidades**:
+  - Hook React Query para API de categorias
+  - Tipagem TypeScript completa
+  - Cache e invalidação automática
+  - Suporte a filtros por tipo
+  - Preparado para quando a API estiver funcionando
+
+### 3.5 Testes e Validação
+- **Script criado**: `test-etapa3.js`
+- **Validações realizadas**:
+  - Homepage carregando corretamente
+  - Página de profissionais com filtros funcionando
+  - APIs de profissionais e empresas operacionais
+  - Todas as páginas principais funcionando
+
+### Estado Atual - ETAPA 3 CONCLUÍDA
+- ✅ **Filtros avançados**: Sistema completo de filtros implementado
+- ✅ **Categorias atualizadas**: Dados mais realistas e consistentes
+- ✅ **Interface aprimorada**: Componentes reutilizáveis e responsivos
+- ✅ **Integração completa**: Filtros funcionando na página de profissionais
+- ✅ **Preparação para APIs**: Hooks e estruturas prontas para APIs futuras
+- ⚠️ **API de categorias**: Problema de roteamento identificado (para resolver futuramente)
+
+### Próximos Passos Sugeridos para ETAPA 4
+- **Sistema de pagamento**: Implementação do Mercado Pago
+- **Funcionalidades de agendamento**: Sistema completo de agendamento
+- **Resolução da API de categorias**: Corrigir problema de roteamento
+- **Otimizações de performance**: Melhorias adicionais
+
+#### 1.6 Dashboard Cliente
+- **Arquivo**: `src/app/cliente/agendamentos/page.tsx`
+  - **Linha 23**: `mockAppointments` - lista de agendamentos do cliente
+- **Arquivo**: `src/app/cliente/favoritos/page.tsx`
+  - **Linha 6**: `mockProviders` - lista de prestadores favoritos
+- **Arquivo**: `src/app/cliente/avaliacoes/page.tsx`
+  - **Linha 6**: `mockReviews` - avaliações feitas pelo cliente
+
+### 2. Plano de Substituição por Dados Reais
+
+#### 2.1 FASE 1 - Estrutura de Dados ✅ CONCLUÍDA
+- [x] **APIs de Dados Reais Criadas**
+  - [x] `/api/companies` - Lista de empresas aprovadas
+  - [x] `/api/companies/[id]` - Detalhes de empresa
+  - [x] `/api/companies/[id]/services` - Serviços por empresa
+  - [x] `/api/companies/[id]/reviews` - Avaliações por empresa
+  - [x] `/api/professionals` - Lista de profissionais aprovados
+  - [x] `/api/professionals/[id]` - Detalhes de profissional
+  - [x] `/api/professionals/[id]/reviews` - Avaliações por profissional
+  - [ ] `/api/categories` - Categorias de profissionais e empresas
+  - [ ] `/api/promotions` - Promoções ativas
+  - [ ] `/api/analytics` - Métricas e estatísticas
+
+#### 2.2 FASE 2 - Homepage e Navegação ✅ PARCIALMENTE CONCLUÍDA
+- [x] **Substituir dados da Homepage**
+  - [x] Implementar busca de profissionais em destaque
+  - [x] Implementar cache para performance (React Query)
+  - [x] Loading states e error handling
+  - [ ] Conectar categorias com banco de dados
+  - [ ] Conectar banner com promoções reais
+
+#### 2.3 FASE 3 - Perfis e Serviços (Prioridade Alta)
+- [ ] **Perfis de Profissionais**
+  - [ ] Conectar com tabela `profiles` do Supabase
+  - [ ] Implementar upload real de imagens
+  - [ ] Conectar especialidades e certificações
+  - [ ] Implementar portfólio real
+- [ ] **Perfis de Empresas**
+  - [ ] Conectar com dados reais de CNPJ
+  - [ ] Implementar horários de funcionamento reais
+  - [ ] Conectar serviços oferecidos
+  - [ ] Implementar galeria de trabalhos
+- [ ] **Detalhes de Serviços**
+  - [ ] Conectar preços reais
+  - [ ] Implementar disponibilidade real
+  - [ ] Conectar com sistema de agendamento
+  - [ ] Implementar galeria de imagens real
+
+#### 2.4 FASE 4 - Dashboards (Prioridade Média)
+- [ ] **Dashboard Empresa**
+  - [ ] Conectar métricas reais de agendamentos
+  - [ ] Implementar cálculo real de faturamento
+  - [ ] Conectar avaliações reais
+  - [ ] Implementar gráficos com dados reais
+- [ ] **Dashboard Cliente**
+  - [ ] Conectar agendamentos reais
+  - [ ] Implementar sistema de favoritos real
+  - [ ] Conectar avaliações feitas pelo cliente
+  - [ ] Implementar histórico de serviços
+
+#### 2.5 FASE 5 - Promoções e Marketing (Prioridade Média)
+- [ ] **Sistema de Promoções**
+  - [ ] Conectar com banco de dados
+  - [ ] Implementar criação/edição de promoções
+  - [ ] Conectar com sistema de pagamento
+  - [ ] Implementar validação de promoções
+
+#### 2.6 FASE 6 - Analytics e Métricas (Prioridade Baixa)
+- [ ] **Analytics Reais**
+  - [ ] Implementar tracking de visualizações
+  - [ ] Conectar com Google Analytics
+  - [ ] Implementar métricas de conversão
+  - [ ] Criar relatórios automatizados
+
+### 3. Estrutura de APIs Necessárias
+
+#### 3.1 APIs de Listagem
+```typescript
+// GET /api/categories
+// GET /api/professionals?category=&location=&page=
+// GET /api/companies?category=&location=&page=
+// GET /api/services?company=&category=&page=
+// GET /api/promotions?active=true&page=
+```
+
+#### 3.2 APIs de Detalhes
+```typescript
+// GET /api/professionals/[id]
+// GET /api/companies/[id]
+// GET /api/services/[id]
+// GET /api/promotions/[id]
+```
+
+#### 3.3 APIs de Dashboard
+```typescript
+// GET /api/dashboard/company/[id]/metrics
+// GET /api/dashboard/client/[id]/appointments
+// GET /api/dashboard/client/[id]/favorites
+// GET /api/dashboard/client/[id]/reviews
+```
+
+#### 3.4 APIs de Analytics
+```typescript
+// GET /api/analytics/profile/[id]
+// POST /api/analytics/track-view
+// GET /api/analytics/reports/[type]
+```
+
+### 4. Cronograma de Implementação
+
+#### Semana 1-2: Estrutura Base
+- [ ] Criar todas as APIs de listagem
+- [ ] Implementar conexão com Supabase
+- [ ] Criar tipos TypeScript para dados reais
+- [ ] Implementar cache básico
+
+#### Semana 3-4: Homepage e Navegação
+- [ ] Substituir dados mockados da homepage
+- [ ] Implementar busca real
+- [ ] Conectar categorias reais
+- [ ] Otimizar performance
+
+#### Semana 5-6: Perfis e Serviços
+- [ ] Conectar perfis com dados reais
+- [ ] Implementar upload de imagens
+- [ ] Conectar serviços reais
+- [ ] Implementar sistema de avaliações
+
+#### Semana 7-8: Dashboards
+- [ ] Conectar dashboards com dados reais
+- [ ] Implementar métricas reais
+- [ ] Criar gráficos dinâmicos
+- [ ] Implementar relatórios
+
+#### Semana 9-10: Finalização
+- [ ] Testes completos
+- [ ] Otimizações de performance
+- [ ] Documentação
+- [ ] Deploy e monitoramento
+
+### 5. Considerações Técnicas
+
+#### 5.1 Performance
+- Implementar cache Redis para dados frequentemente acessados
+- Usar React Query para cache de dados no frontend
+- Implementar paginação em todas as listagens
+- Otimizar queries do banco de dados
+
+#### 5.2 Segurança
+- Validar todos os dados de entrada
+- Implementar rate limiting nas APIs
+- Proteger dados sensíveis
+- Implementar logs de auditoria
+
+#### 5.3 Escalabilidade
+- Preparar para crescimento de dados
+- Implementar índices no banco
+- Considerar CDN para imagens
+- Monitorar performance das APIs
 
 ## 📝 NOTAS IMPORTANTES
 - Foco em MVP funcional
@@ -626,3 +1026,178 @@
 - Priorizar implementação do sistema de pagamento
 - Finalizar funcionalidades de agendamento pendentes
 - Preparar documentação para lançamento
+- **NOVO**: Substituir dados mockados por dados reais seguindo o cronograma acima
+
+## 🧹 LIMPEZA E ORGANIZAÇÃO DO PROJETO
+
+### 📁 Arquivos de Teste para Remoção
+> Arquivos que foram criados para testes durante o desenvolvimento e podem ser removidos
+
+#### 1. Arquivos de Teste JavaScript (Raiz do Projeto)
+- [ ] `test-cadastro-empresas.js` - Teste do sistema de cadastro de empresas (CONCLUÍDO)
+- [ ] `test-empresa-nova.js` - Teste de cadastro com dados únicos (CONCLUÍDO)
+- [ ] `test-etapa3.js` - Teste da ETAPA 3 com filtros e APIs (CONCLUÍDO)
+- [ ] `test-final.js` - Teste final do sistema (CONCLUÍDO)
+- [ ] `test-apis.js` - Teste das APIs implementadas (CONCLUÍDO)
+- [ ] `test-categories.js` - Teste das categorias (CONCLUÍDO)
+
+#### 2. Arquivos de Documentação Temporária (Raiz do Projeto)
+- [ ] `profile_edit_implementation.md` - Documentação de implementação de perfil
+- [ ] `client_pages_event_handler_fix.md` - Fix de event handlers
+- [ ] `button_event_handler_fix.md` - Fix de botões
+- [ ] `dashboard_fix.md` - Fix do dashboard
+- [ ] `use_client_fix.md` - Fix de use client
+- [ ] `cliente_routes_fix.md` - Fix de rotas de cliente
+- [ ] `test_logout.md` - Teste de logout
+- [ ] `test_auth.md` - Teste de autenticação
+- [ ] `fix_auth_ultimate.sql` - SQL de fix de autenticação
+- [ ] `solution_alternative.sql` - SQL de solução alternativa
+- [ ] `diagnostic_complete.sql` - SQL de diagnóstico
+- [ ] `fluxograma.md` - Fluxograma do sistema
+
+#### 3. Páginas de Teste (src/app/)
+- [ ] `src/app/teste-claude/` - Página de teste do Claude AI (manter se necessário)
+- [ ] `src/app/demo-maps/` - Pasta vazia de demo de mapas (REMOVER)
+
+#### 4. Arquivos Gerados Desnecessários
+- [ ] `src/generated/prisma/` - Arquivos gerados do Prisma (não está sendo usado)
+  - [ ] Todo o diretório pode ser removido se não estiver usando Prisma
+
+#### 5. Chaves e Credenciais Expostas
+- [ ] `claude-vertex-ai-key.json` - Chave do Google Cloud (MOVER para .env ou remover)
+
+### 🗂️ Reorganização de Pastas
+
+#### 1. Rotas Duplicadas (CRÍTICO - JÁ IDENTIFICADO)
+> Problema: Existem rotas duplicadas que causam confusão
+- [ ] **Consolidar rotas de empresa:**
+  - [ ] `src/app/(empresa)/` → `src/app/dashboard/empresa/`
+  - [ ] `src/app/empresa/` → manter como área pública
+  - [ ] Atualizar todos os links internos
+  
+- [ ] **Consolidar rotas de cliente:**
+  - [ ] `src/app/(client)/` → `src/app/dashboard/cliente/`
+  - [ ] `src/app/cliente/` → manter como área pública
+  - [ ] Atualizar todos os links internos
+
+#### 2. Estrutura de Componentes
+> Organizar melhor os componentes por funcionalidade
+- [ ] **Criar subpastas específicas:**
+  - [ ] `src/components/dashboard/` - Componentes de dashboard
+  - [ ] `src/components/forms/` - Formulários específicos
+  - [ ] `src/components/auth/` - Componentes de autenticação
+  - [ ] `src/components/admin/` - Componentes administrativos
+
+#### 3. Dados Mockados Restantes
+> Identificar e substituir dados mockados por APIs reais
+- [ ] **Arquivos com dados mockados:**
+  - [ ] `src/components/promotions/PromotionsSection.tsx` - mockPromotions
+  - [ ] `src/components/analytics/ProfileAnalytics.tsx` - mockData
+  - [ ] `src/app/empresa/promocoes/page.tsx` - mockPromotions
+  - [ ] `src/app/empresa/page.tsx` - mockData (dashboard)
+
+#### 4. Configurações Duplicadas
+- [ ] **Arquivos de configuração duplicados:**
+  - [ ] `tailwind.config.js` vs `tailwind.config.ts` (manter apenas TS)
+  - [ ] `postcss.config.js` vs `postcss.config.mjs` (manter apenas um)
+
+### 📋 Plano de Limpeza
+
+#### FASE 1 - Remoção Segura (Imediata)
+1. [ ] Remover arquivos de teste JavaScript da raiz
+2. [ ] Remover documentação temporária de fixes
+3. [ ] Remover pasta `demo-maps` vazia
+4. [ ] Mover ou remover `claude-vertex-ai-key.json`
+5. [ ] Remover `src/generated/prisma/` se não usado
+
+#### FASE 2 - Reorganização de Rotas (Crítica)
+1. [ ] Consolidar rotas duplicadas
+2. [ ] Atualizar imports e links
+3. [ ] Testar todas as rotas após mudanças
+4. [ ] Implementar redirecionamentos se necessário
+
+#### FASE 3 - Organização de Componentes (Média)
+1. [ ] Criar estrutura de subpastas
+2. [ ] Mover componentes para pastas apropriadas
+3. [ ] Atualizar imports
+4. [ ] Documentar nova estrutura
+
+#### FASE 4 - Substituição de Dados Mockados (Baixa)
+1. [ ] Criar APIs para dados mockados restantes
+2. [ ] Substituir dados mockados por APIs reais
+3. [ ] Remover arquivos de dados mockados
+4. [ ] Testar funcionalidades
+
+### 🎯 Benefícios da Limpeza
+
+#### 1. Performance
+- [ ] Redução do tamanho do bundle
+- [ ] Menos arquivos para processar
+- [ ] Build mais rápido
+
+#### 2. Manutenibilidade
+- [ ] Código mais organizado
+- [ ] Estrutura clara e lógica
+- [ ] Menos confusão para desenvolvedores
+
+#### 3. Segurança
+- [ ] Remoção de credenciais expostas
+- [ ] Menos superfície de ataque
+- [ ] Código de produção limpo
+
+#### 4. SEO e UX
+- [ ] URLs mais limpos
+- [ ] Sem rotas duplicadas
+- [ ] Navegação mais clara
+
+### ⚠️ Cuidados na Limpeza
+
+#### 1. Backup
+- [ ] Fazer backup completo antes de iniciar
+- [ ] Usar Git para controle de versão
+- [ ] Testar em branch separada
+
+#### 2. Dependências
+- [ ] Verificar se arquivos são importados
+- [ ] Checar referências em outros arquivos
+- [ ] Validar que não quebra funcionalidades
+
+#### 3. Testes
+- [ ] Testar todas as funcionalidades após limpeza
+- [ ] Verificar se build funciona
+- [ ] Validar que deploy não quebra
+
+### 📝 Checklist de Validação Pós-Limpeza
+
+#### 1. Build e Deploy
+- [ ] `npm run build` executa sem erros
+- [ ] `npm run dev` inicia corretamente
+- [ ] Deploy funciona normalmente
+
+#### 2. Funcionalidades Core
+- [ ] Autenticação funciona
+- [ ] Cadastros funcionam
+- [ ] APIs respondem corretamente
+- [ ] Páginas carregam sem erro
+
+#### 3. Navegação
+- [ ] Todos os links funcionam
+- [ ] Redirecionamentos corretos
+- [ ] Menu de navegação atualizado
+- [ ] Breadcrumbs funcionais
+
+#### 4. Performance
+- [ ] Tempo de carregamento mantido ou melhorado
+- [ ] Bundle size reduzido
+- [ ] Lighthouse score mantido ou melhorado
+
+## 📝 NOTAS IMPORTANTES
+- Foco em MVP funcional
+- Priorizar experiência do usuário
+- Garantir segurança básica
+- Monitorar métricas essenciais
+- Priorizar implementação do sistema de pagamento
+- Finalizar funcionalidades de agendamento pendentes
+- Preparar documentação para lançamento
+- **NOVO**: Substituir dados mockados por dados reais seguindo o cronograma acima
+- **LIMPEZA**: Remover arquivos de teste e reorganizar estrutura do projeto
