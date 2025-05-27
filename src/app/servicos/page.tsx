@@ -5,7 +5,8 @@ import Link from 'next/link';
 import { MapPin, Clock, Search, Star, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import { createClient } from '@/lib/supabase/client';
 
 const categorias = [
   {
@@ -53,36 +54,6 @@ const categorias = [
     ]
   },
   {
-    id: 'treinamento',
-    nome: 'Treinamento & Educação Corporativa',
-    subcategorias: [
-      { id: 'cursos', nome: 'Cursos Profissionalizantes' },
-      { id: 'treinamentos', nome: 'Treinamentos Técnicos' },
-      { id: 'coaching', nome: 'Coaching & Mentoria' },
-      { id: 'palestras', nome: 'Palestras & Workshops' }
-    ]
-  },
-  {
-    id: 'engenharia',
-    nome: 'Engenharia & Arquitetura',
-    subcategorias: [
-      { id: 'arquitetura', nome: 'Projetos Arquitetônicos' },
-      { id: 'engenharia-civil', nome: 'Engenharia Civil & Elétrica' },
-      { id: 'laudos', nome: 'Laudos Técnicos & Vistorias' },
-      { id: 'topografia', nome: 'Geoprocessamento & Topografia' }
-    ]
-  },
-  {
-    id: 'ambiental',
-    nome: 'Serviços Ambientais',
-    subcategorias: [
-      { id: 'licenciamento', nome: 'Licenciamento Ambiental' },
-      { id: 'residuos', nome: 'Gestão de Resíduos' },
-      { id: 'sustentabilidade', nome: 'Consultoria em Sustentabilidade' },
-      { id: 'energia', nome: 'Energia Solar & Eficientização' }
-    ]
-  },
-  {
     id: 'manutencao',
     nome: 'Manutenção & Instalações Comerciais',
     subcategorias: [
@@ -91,128 +62,95 @@ const categorias = [
       { id: 'seguranca', nome: 'CFTV & Segurança Eletrônica' },
       { id: 'limpeza', nome: 'Limpeza Técnica & Predial' }
     ]
-  },
-  {
-    id: 'eventos',
-    nome: 'Eventos Corporativos',
-    subcategorias: [
-      { id: 'organizacao', nome: 'Organização de Eventos' },
-      { id: 'locacao', nome: 'Locação de Equipamentos' },
-      { id: 'buffet', nome: 'Buffet & Coffee Break' },
-      { id: 'cerimonial', nome: 'Cerimonial & Protocolo' }
-    ]
-  },
-  {
-    id: 'industria',
-    nome: 'Serviços para Indústrias',
-    subcategorias: [
-      { id: 'manutencao-industrial', nome: 'Manutenção Industrial' },
-      { id: 'automacao-processos', nome: 'Automação de Processos' },
-      { id: 'nr', nome: 'Treinamentos NR' },
-      { id: 'qualidade', nome: 'Consultoria de Qualidade (ISO, Lean, etc.)' }
-    ]
-  },
-  {
-    id: 'saude',
-    nome: 'Serviços de Saúde e Bem-Estar',
-    subcategorias: [
-      { id: 'clinicas', nome: 'Clínicas Médicas & Odontológicas' },
-      { id: 'psicologia', nome: 'Psicologia & Terapias' },
-      { id: 'fisioterapia', nome: 'Fisioterapia & Reabilitação' },
-      { id: 'nutricao', nome: 'Nutrição & Estética Avançada' }
-    ]
   }
 ];
 
-const servicosData = [
-  {
-    id: 1,
-    nome: 'Eletrotec Instalações',
-    descricao: 'Empresa especializada em instalações e manutenções elétricas residenciais e comerciais',
-    imagem: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=500&auto=format&fit=crop&q=60',
-    categoria: 'eletrica',
-    categoriaMain: 'manutencao',
-    precoHora: 'R$ 120',
-    rating: 4.8,
-    reviews: 156,
-    tempoMedioAtendimento: '1-2 horas',
-    distancia: '2.5 km',
-    empresaParceira: true,
-    servicosDestaque: ['Instalação', 'Manutenção', 'Projetos']
-  },
-  {
-    id: 2,
-    nome: 'Hidro Service',
-    descricao: 'Soluções completas em serviços hidráulicos com atendimento 24 horas',
-    imagem: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=500&auto=format&fit=crop&q=60',
-    categoria: 'eletrica',
-    categoriaMain: 'manutencao',
-    precoHora: 'R$ 100',
-    rating: 4.7,
-    reviews: 143,
-    tempoMedioAtendimento: '1-3 horas',
-    distancia: '3.2 km',
-    empresaParceira: true,
-    servicosDestaque: ['Reparos', 'Instalação', 'Desentupimento']
-  },
-  {
-    id: 3,
-    nome: 'Nova Cor Pinturas',
-    descricao: 'Pinturas residenciais e comerciais com acabamento premium',
-    imagem: 'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=500&auto=format&fit=crop&q=60',
-    categoria: 'engenharia-civil',
-    categoriaMain: 'engenharia',
-    precoHora: 'R$ 80',
-    rating: 4.9,
-    reviews: 178,
-    tempoMedioAtendimento: '4-8 horas',
-    distancia: '1.8 km',
-    empresaParceira: false,
-    servicosDestaque: ['Pintura', 'Textura', 'Grafiato']
-  },
-  {
-    id: 4,
-    nome: 'Design Spaces',
-    descricao: 'Studio de design de interiores com projetos personalizados',
-    imagem: 'https://images.unsplash.com/photo-1631679706909-1844bbd07221?w=500&auto=format&fit=crop&q=60',
-    categoria: 'arquitetura',
-    categoriaMain: 'engenharia',
-    precoHora: 'Sob consulta',
-    rating: 4.9,
-    reviews: 92,
-    tempoMedioAtendimento: 'Agenda para consulta',
-    distancia: '5.0 km',
-    empresaParceira: false,
-    servicosDestaque: ['Projetos', 'Consultoria', 'Decoração'],
-    orcamento: 'Orçamento personalizado'
-  },
-  {
-    id: 5,
-    nome: 'TechFix Solutions',
-    descricao: 'Assistência técnica especializada em eletrônicos e eletrodomésticos',
-    imagem: 'https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=500&auto=format&fit=crop&q=60',
-    categoria: 'suporte-ti',
-    categoriaMain: 'tecnologia',
-    precoHora: 'R$ 90',
-    rating: 4.6,
-    reviews: 167,
-    tempoMedioAtendimento: '30-45 min',
-    distancia: '4.2 km',
-    empresaParceira: true,
-    servicosDestaque: ['Reparo', 'Manutenção', 'Instalação'],
-    destaque: '50% para novos clientes'
-  }
-];
+interface Company {
+  id: string;
+  name: string;
+  description: string;
+  logo_url: string;
+  rating: number;
+  total_reviews: number;
+  categories: string[];
+  business_type: string;
+  company_addresses: Array<{
+    city: string;
+    state: string;
+    neighborhood: string;
+  }>;
+  company_contacts: Array<{
+    phone: string;
+    email: string;
+  }>;
+  company_services: Array<{
+    name: string;
+    price: number;
+    category: string;
+  }>;
+}
 
 export default function ServicosPage() {
   const [categoriaAtiva, setCategoriaAtiva] = useState('todas');
   const [subcategoriaAtiva, setSubcategoriaAtiva] = useState('todas');
   const [searchTerm, setSearchTerm] = useState('');
+  const [companies, setCompanies] = useState<Company[]>([]);
+  const [loading, setLoading] = useState(true);
   const categoriasContainerRef = useRef<HTMLDivElement>(null);
+  const supabase = createClient();
+
+  useEffect(() => {
+    fetchCompanies();
+  }, []);
+
+  const fetchCompanies = async () => {
+    try {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('companies')
+        .select(`
+          id,
+          name,
+          description,
+          logo_url,
+          rating,
+          total_reviews,
+          categories,
+          business_type,
+          company_addresses (
+            city,
+            state,
+            neighborhood
+          ),
+          company_contacts (
+            phone,
+            email
+          ),
+          company_services (
+            name,
+            price,
+            category
+          )
+        `)
+        .eq('status', 'active')
+        .order('rating', { ascending: false });
+
+      if (error) {
+        console.error('Erro ao buscar empresas:', error);
+        return;
+      }
+
+      setCompanies(data || []);
+    } catch (error) {
+      console.error('Erro ao buscar empresas:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const scrollCategories = (direction: 'left' | 'right') => {
     if (categoriasContainerRef.current) {
-      const scrollAmount = 300; // Ajuste este valor conforme necessário
+      const scrollAmount = 300;
       const container = categoriasContainerRef.current;
       const newScrollPosition = direction === 'left' 
         ? container.scrollLeft - scrollAmount 
@@ -239,17 +177,69 @@ export default function ServicosPage() {
     setSubcategoriaAtiva(subcategoriaId === subcategoriaAtiva ? 'todas' : subcategoriaId);
   };
 
-  // Filtra os serviços baseado na categoria selecionada e termo de busca
-  const servicosFiltrados = servicosData.filter(servico => {
-    const matchesCategoria = categoriaAtiva === 'todas' || servico.categoriaMain === categoriaAtiva;
-    const matchesSubcategoria = subcategoriaAtiva === 'todas' || servico.categoria === subcategoriaAtiva;
+  // Mapear categorias do banco para as categorias da UI
+  const mapCategoryToUI = (categories: string[]) => {
+    const categoryMap: { [key: string]: { main: string; sub: string } } = {
+      'logistica': { main: 'logistica', sub: 'cargas' },
+      'cargas': { main: 'logistica', sub: 'cargas' },
+      'transporte': { main: 'logistica', sub: 'cargas' },
+      'financeiro': { main: 'servicos-empresariais', sub: 'financeiro' },
+      'seguros': { main: 'servicos-empresariais', sub: 'financeiro' },
+      'consultoria': { main: 'servicos-empresariais', sub: 'consultoria' },
+      'seguranca': { main: 'manutencao', sub: 'seguranca' },
+      'monitoramento': { main: 'manutencao', sub: 'seguranca' },
+      'tecnologia': { main: 'tecnologia', sub: 'desenvolvimento' },
+      'gestao': { main: 'servicos-empresariais', sub: 'consultoria' },
+      'desenvolvimento': { main: 'tecnologia', sub: 'desenvolvimento' },
+      'software': { main: 'tecnologia', sub: 'desenvolvimento' },
+      'automacao': { main: 'tecnologia', sub: 'automacao' },
+    };
+
+    for (const category of categories) {
+      const mapped = categoryMap[category.toLowerCase()];
+      if (mapped) return mapped;
+    }
+    
+    return { main: 'servicos-empresariais', sub: 'consultoria' };
+  };
+
+  // Filtrar empresas
+  const empresasFiltradas = companies.filter(company => {
+    const mapped = mapCategoryToUI(company.categories);
+    const matchesCategoria = categoriaAtiva === 'todas' || mapped.main === categoriaAtiva;
+    const matchesSubcategoria = subcategoriaAtiva === 'todas' || mapped.sub === subcategoriaAtiva;
     const matchesSearch = searchTerm === '' || 
-      servico.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      servico.descricao.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      servico.servicosDestaque.some(s => s.toLowerCase().includes(searchTerm.toLowerCase()));
+      company.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      company.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      company.categories.some(cat => cat.toLowerCase().includes(searchTerm.toLowerCase()));
     
     return matchesCategoria && matchesSubcategoria && matchesSearch;
   });
+
+  // Função para calcular preço médio dos serviços
+  const getAveragePrice = (services: Company['company_services']) => {
+    if (!services || services.length === 0) return 'Sob consulta';
+    const total = services.reduce((sum, service) => sum + service.price, 0);
+    const average = total / services.length;
+    return `R$ ${average.toFixed(0)}`;
+  };
+
+  // Função para obter serviços em destaque
+  const getHighlightServices = (services: Company['company_services']) => {
+    if (!services || services.length === 0) return ['Consulte serviços'];
+    return services.slice(0, 3).map(service => service.name);
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+          <p className="mt-4 text-gray-600">Carregando empresas...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -271,6 +261,16 @@ export default function ServicosPage() {
               className="flex overflow-x-auto scrollbar-hide py-4 -mb-px scroll-smooth"
             >
               <div className="flex space-x-1 min-w-full px-8">
+                <button
+                  className={`flex items-center gap-2 text-sm px-3 py-2 rounded-lg transition-colors whitespace-nowrap ${
+                    categoriaAtiva === 'todas'
+                      ? 'bg-red-500 text-white'
+                      : 'hover:bg-red-50'
+                  }`}
+                  onClick={() => handleCategoriaClick('todas')}
+                >
+                  Todas as Categorias
+                </button>
                 {categorias.map((categoria) => (
                   <div key={categoria.id} className="relative group">
                     <button
@@ -285,7 +285,7 @@ export default function ServicosPage() {
                       <ChevronDown className="w-4 h-4" />
                     </button>
                     
-                    {/* Dropdown de Subcategorias (aparece no hover) */}
+                    {/* Dropdown de Subcategorias */}
                     <div className="hidden group-hover:block absolute top-full left-0 mt-1 bg-white border rounded-lg shadow-lg py-2 min-w-[200px] z-20">
                       {categoria.subcategorias.map((sub) => (
                         <button
@@ -320,7 +320,9 @@ export default function ServicosPage() {
       </div>
 
       <div className="container mx-auto px-4 py-6">
-        <h1 className="text-2xl font-bold mb-4">Serviços em sua região</h1>
+        <h1 className="text-2xl font-bold mb-4">
+          Serviços em sua região ({empresasFiltradas.length} empresas encontradas)
+        </h1>
         
         {/* Filtros e Busca */}
         <div className="flex flex-col md:flex-row justify-between mb-6 gap-4">
@@ -351,7 +353,7 @@ export default function ServicosPage() {
         
         {/* Lista de Empresas */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {servicosFiltrados.map((empresa, index) => (
+          {empresasFiltradas.map((empresa, index) => (
             <Link 
               key={empresa.id} 
               href={`/empresas/${empresa.id}/perfil`}
@@ -360,14 +362,9 @@ export default function ServicosPage() {
               <div className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-200 group-hover:border-primary/20">
                 {/* Container da Imagem */}
                 <div className="relative h-48">
-                  {empresa.destaque && (
-                    <div className="absolute top-3 left-0 bg-red-600 text-white text-xs py-1 px-3 z-10">
-                      {empresa.destaque}
-                    </div>
-                  )}
                   <Image
-                    src={empresa.imagem}
-                    alt={empresa.nome || 'Imagem da empresa'}
+                    src={empresa.logo_url || 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=500&auto=format&fit=crop&q=60'}
+                    alt={empresa.name || 'Logo da empresa'}
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     className="object-cover"
@@ -379,22 +376,22 @@ export default function ServicosPage() {
                 <div className="p-4">
                   <div className="flex justify-between items-start mb-2">
                     <div>
-                      <h3 className="font-semibold text-lg group-hover:text-primary transition-colors">{empresa.nome}</h3>
+                      <h3 className="font-semibold text-lg group-hover:text-primary transition-colors">{empresa.name}</h3>
                       <p className="text-sm text-gray-600">
-                        {categorias.find(c => c.id === empresa.categoriaMain)?.subcategorias.find(s => s.id === empresa.categoria)?.nome}
+                        {empresa.business_type}
                       </p>
                     </div>
                     <div className="flex items-center">
                       <Star className="w-4 h-4 text-yellow-500" />
                       <span className="text-sm ml-1">{empresa.rating}</span>
-                      <span className="text-xs text-gray-500 ml-1">({empresa.reviews})</span>
+                      <span className="text-xs text-gray-500 ml-1">({empresa.total_reviews})</span>
                     </div>
                   </div>
                   
-                  <p className="text-sm text-gray-600 mb-3">{empresa.descricao}</p>
+                  <p className="text-sm text-gray-600 mb-3">{empresa.description}</p>
 
                   <div className="flex flex-wrap gap-1 mb-3">
-                    {empresa.servicosDestaque.map((servico, idx) => (
+                    {getHighlightServices(empresa.company_services).map((servico, idx) => (
                       <span key={idx} className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
                         {servico}
                       </span>
@@ -403,33 +400,40 @@ export default function ServicosPage() {
                   
                   <div className="flex items-center text-sm text-gray-500 mb-3">
                     <Clock className="w-4 h-4 mr-1" />
-                    <span>{empresa.tempoMedioAtendimento}</span>
+                    <span>Consulte horários</span>
                     <span className="mx-2">•</span>
                     <MapPin className="w-4 h-4 mr-1" />
-                    <span>{empresa.distancia}</span>
+                    <span>
+                      {empresa.company_addresses?.[0]?.city || 'São Paulo'}, {empresa.company_addresses?.[0]?.state || 'SP'}
+                    </span>
                   </div>
                   
                   <div className="flex justify-between items-center">
                     <div>
                       <p className="font-medium text-primary">
-                        {empresa.precoHora}
-                        {empresa.precoHora !== 'Sob consulta' && <span className="text-sm text-gray-500">/hora</span>}
+                        {getAveragePrice(empresa.company_services)}
+                        {getAveragePrice(empresa.company_services) !== 'Sob consulta' && <span className="text-sm text-gray-500">/serviço</span>}
                       </p>
-                      {empresa.orcamento && (
-                        <p className="text-xs text-gray-500">{empresa.orcamento}</p>
-                      )}
                     </div>
-                    {empresa.empresaParceira && (
-                      <span className="text-xs bg-red-50 text-red-600 px-2 py-1 rounded">
-                        Empresa parceira
-                      </span>
-                    )}
+                    <span className="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded">
+                      {empresa.company_services?.length || 0} serviços
+                    </span>
                   </div>
                 </div>
               </div>
             </Link>
           ))}
         </div>
+
+        {empresasFiltradas.length === 0 && !loading && (
+          <div className="text-center py-12">
+            <div className="text-gray-400 mb-4">
+              <Search className="w-16 h-16 mx-auto" />
+            </div>
+            <h3 className="text-lg font-semibold text-gray-600 mb-2">Nenhuma empresa encontrada</h3>
+            <p className="text-gray-500">Tente ajustar os filtros ou termo de busca</p>
+          </div>
+        )}
       </div>
     </div>
   );

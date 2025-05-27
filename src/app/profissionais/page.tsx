@@ -7,9 +7,10 @@ import { MapPin, Clock, Search, Star, Briefcase, ChevronDown, ChevronLeft, Chevr
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useProfessionals } from '@/hooks/api/useProfessionals';
 import { ProfessionalFilters } from '@/components/filters/ProfessionalFilters';
+import { createClient } from '@/lib/supabase/client';
 
 const categorias = [
   {
@@ -128,91 +129,17 @@ const categorias = [
   }
 ];
 
-const profissionaisData = [
-  {
-    id: 1,
-    nome: 'João Silva',
-    profissao: 'Eletricista',
-    descricao: 'Especialista em instalações elétricas residenciais e comerciais',
-    imagem: 'https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=500&auto=format&fit=crop&q=60',
-    categoria: 'eletricistas',
-    categoriaMain: 'servicos-gerais',
-    precoHora: 'R$ 80',
-    rating: 4.9,
-    reviews: 203,
-    tempoMedioAtendimento: '1-2 horas',
-    distancia: '3.2 km',
-    profissionalVerificado: true,
-    servicosDestaque: ['Instalação', 'Manutenção', 'Reparos']
-  },
-  {
-    id: 2,
-    nome: 'Maria Santos',
-    profissao: 'Diarista',
-    descricao: 'Limpeza residencial e comercial com produtos especializados',
-    imagem: 'https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=500&auto=format&fit=crop&q=60',
-    categoria: 'diaristas',
-    categoriaMain: 'servicos-gerais',
-    precoHora: 'R$ 35',
-    rating: 4.8,
-    reviews: 156,
-    tempoMedioAtendimento: '4-6 horas',
-    distancia: '1.5 km',
-    profissionalVerificado: true,
-    servicosDestaque: ['Limpeza Geral', 'Passadoria', 'Organização']
-  },
-  {
-    id: 3,
-    nome: 'Carlos Oliveira',
-    profissao: 'Personal Trainer',
-    descricao: 'Treinos personalizados para seus objetivos específicos',
-    imagem: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&auto=format&fit=crop&q=60',
-    categoria: 'personal-trainers',
-    categoriaMain: 'saude',
-    precoHora: 'R$ 120',
-    rating: 5.0,
-    reviews: 89,
-    tempoMedioAtendimento: '1 hora',
-    distancia: '2.8 km',
-    profissionalVerificado: true,
-    servicosDestaque: ['Musculação', 'Funcional', 'Aeróbico'],
-    destaque: 'Primeira aula grátis'
-  },
-  {
-    id: 4,
-    nome: 'Ana Pereira',
-    profissao: 'Cabeleireira',
-    descricao: 'Especialista em cortes modernos e coloração',
-    imagem: 'https://images.unsplash.com/photo-1562322140-8baeececf3df?w=500&auto=format&fit=crop&q=60',
-    categoria: 'cabeleireiros',
-    categoriaMain: 'beleza',
-    precoHora: 'Sob consulta',
-    rating: 4.7,
-    reviews: 245,
-    tempoMedioAtendimento: 'Agenda para consulta',
-    distancia: '4.1 km',
-    profissionalVerificado: true,
-    servicosDestaque: ['Corte', 'Coloração', 'Tratamentos'],
-    destaque: '20% OFF primeira visita'
-  },
-  {
-    id: 5,
-    nome: 'Pedro Costa',
-    profissao: 'Desenvolvedor Web',
-    descricao: 'Desenvolvimento de sites e aplicações web responsivas',
-    imagem: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=500&auto=format&fit=crop&q=60',
-    categoria: 'desenvolvedores-sites',
-    categoriaMain: 'design',
-    precoHora: 'R$ 150',
-    rating: 4.9,
-    reviews: 67,
-    tempoMedioAtendimento: 'Projeto sob demanda',
-    distancia: '5.0 km',
-    profissionalVerificado: true,
-    servicosDestaque: ['Sites', 'E-commerce', 'Landing Pages'],
-    orcamento: 'Orçamento personalizado'
-  }
-];
+interface Professional {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  specialties: string[];
+  status: string;
+  created_at: string;
+  total_reviews: number;
+  average_rating: number;
+}
 
 // Componente de Loading para os cards
 function ProfissionalCardSkeleton() {
@@ -400,32 +327,64 @@ export default function ProfissionaisPage() {
   const [categoriaAtiva, setCategoriaAtiva] = useState('todos');
   const [subcategoriaAtiva, setSubcategoriaAtiva] = useState('todas');
   const [searchTerm, setSearchTerm] = React.useState('');
+  const [professionals, setProfessionals] = useState<Professional[]>([]);
+  const [loading, setLoading] = useState(true);
   const categoriasContainerRef = useRef<HTMLDivElement>(null);
-  
-  // Estado dos filtros avançados
-  const [filters, setFilters] = useState({
-    search: '',
-    location: '',
-    category: '',
-    minRating: 0,
-    maxPrice: 1000,
-    availability: '',
-    specialties: [] as string[]
-  });
+  const supabase = createClient();
 
-  const clearFilters = () => {
-    setFilters({
-      search: '',
-      location: '',
-      category: '',
-      minRating: 0,
-      maxPrice: 1000,
-      availability: '',
-      specialties: []
-    });
-    setCategoriaAtiva('todos');
-    setSubcategoriaAtiva('todas');
-    setSearchTerm('');
+  useEffect(() => {
+    fetchProfessionals();
+  }, []);
+
+  const fetchProfessionals = async () => {
+    try {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('professionals')
+        .select(`
+          id,
+          name,
+          email,
+          phone,
+          specialties,
+          status,
+          created_at
+        `)
+        .eq('status', 'active')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('Erro ao buscar profissionais:', error);
+        return;
+      }
+
+      // Buscar estatísticas de avaliações para cada profissional
+      const professionalsWithStats = await Promise.all(
+        (data || []).map(async (professional) => {
+          const { data: reviews } = await supabase
+            .from('professional_reviews')
+            .select('rating')
+            .eq('professional_id', professional.id);
+
+          const total_reviews = reviews?.length || 0;
+          const average_rating = total_reviews > 0 && reviews
+            ? reviews.reduce((sum, review) => sum + review.rating, 0) / total_reviews 
+            : 0;
+
+          return {
+            ...professional,
+            total_reviews,
+            average_rating: Math.round(average_rating * 10) / 10
+          };
+        })
+      );
+
+      setProfessionals(professionalsWithStats);
+    } catch (error) {
+      console.error('Erro ao buscar profissionais:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const scrollCategories = (direction: 'left' | 'right') => {
@@ -457,31 +416,105 @@ export default function ProfissionaisPage() {
     setSubcategoriaAtiva(subcategoriaId === subcategoriaAtiva ? 'todas' : subcategoriaId);
   };
 
-  const profissionaisFiltrados = profissionaisData.filter(profissional => {
-    // Filtros de categoria (mantendo compatibilidade)
-    const matchesCategoria = categoriaAtiva === 'todos' || profissional.categoriaMain === categoriaAtiva;
-    const matchesSubcategoria = subcategoriaAtiva === 'todas' || profissional.categoria === subcategoriaAtiva;
+  // Mapear especialidades do banco para as categorias da UI
+  const mapSpecialtyToCategory = (specialties: string[]) => {
+    const specialtyMap: { [key: string]: { main: string; sub: string } } = {
+      // Serviços Gerais
+      'instalação elétrica': { main: 'servicos-gerais', sub: 'eletricistas' },
+      'manutenção preventiva': { main: 'servicos-gerais', sub: 'eletricistas' },
+      'automação': { main: 'servicos-gerais', sub: 'eletricistas' },
+      'pintura residencial': { main: 'servicos-gerais', sub: 'pintores' },
+      'pintura comercial': { main: 'servicos-gerais', sub: 'pintores' },
+      'pintura industrial': { main: 'servicos-gerais', sub: 'pintores' },
+      'textura': { main: 'servicos-gerais', sub: 'pintores' },
+      'grafiato': { main: 'servicos-gerais', sub: 'pintores' },
+      'jardinagem': { main: 'servicos-gerais', sub: 'jardineiros' },
+      'paisagismo': { main: 'servicos-gerais', sub: 'jardineiros' },
+      'poda': { main: 'servicos-gerais', sub: 'jardineiros' },
+      'irrigação': { main: 'servicos-gerais', sub: 'jardineiros' },
+      'limpeza residencial': { main: 'servicos-gerais', sub: 'diaristas' },
+      'limpeza pós-obra': { main: 'servicos-gerais', sub: 'diaristas' },
+      'organização': { main: 'servicos-gerais', sub: 'diaristas' },
+      'pedreiro': { main: 'servicos-gerais', sub: 'pedreiros' },
+      'azulejista': { main: 'servicos-gerais', sub: 'azulejistas' },
+      'gesseiro': { main: 'servicos-gerais', sub: 'azulejistas' },
+      
+      // Técnicos
+      'manutenção de pc': { main: 'instalacoes', sub: 'informatica' },
+      'instalação de redes': { main: 'instalacoes', sub: 'informatica' },
+      'suporte técnico': { main: 'instalacoes', sub: 'informatica' },
+      
+      // Saúde
+      'terapia individual': { main: 'saude', sub: 'psicologos' },
+      'terapia de casal': { main: 'saude', sub: 'psicologos' },
+      'psicologia infantil': { main: 'saude', sub: 'psicologos' },
+      'musculação': { main: 'saude', sub: 'personal-trainers' },
+      'funcional': { main: 'saude', sub: 'personal-trainers' },
+      'crossfit': { main: 'saude', sub: 'personal-trainers' },
+      'nutrição esportiva': { main: 'saude', sub: 'nutricionistas' },
+      'emagrecimento': { main: 'saude', sub: 'nutricionistas' },
+      'reeducação alimentar': { main: 'saude', sub: 'nutricionistas' },
+      'fisioterapia ortopédica': { main: 'saude', sub: 'fisioterapeutas' },
+      'rpg': { main: 'saude', sub: 'fisioterapeutas' },
+      'pilates': { main: 'saude', sub: 'fisioterapeutas' },
+      
+      // Beleza
+      'corte feminino': { main: 'beleza', sub: 'cabeleireiros' },
+      'coloração': { main: 'beleza', sub: 'cabeleireiros' },
+      'escova': { main: 'beleza', sub: 'cabeleireiros' },
+      'manicure': { main: 'beleza', sub: 'manicures' },
+      'pedicure': { main: 'beleza', sub: 'manicures' },
+      'nail art': { main: 'beleza', sub: 'manicures' },
+      
+      // Automotivos
+      'mecânica geral': { main: 'automotivos', sub: 'mecanicos' },
+      'elétrica automotiva': { main: 'automotivos', sub: 'eletricistas-auto' },
+      'injeção eletrônica': { main: 'automotivos', sub: 'mecanicos' },
+    };
+
+    for (const specialty of specialties) {
+      const mapped = specialtyMap[specialty.toLowerCase()];
+      if (mapped) return mapped;
+    }
     
-    // Filtros avançados
-    const matchesSearch = (filters.search === '' && searchTerm === '') || 
-      profissional.nome.toLowerCase().includes((filters.search || searchTerm).toLowerCase()) ||
-      profissional.profissao.toLowerCase().includes((filters.search || searchTerm).toLowerCase()) ||
-      profissional.descricao.toLowerCase().includes((filters.search || searchTerm).toLowerCase()) ||
-      profissional.servicosDestaque.some(s => s.toLowerCase().includes((filters.search || searchTerm).toLowerCase()));
-    
-    const matchesCategory = filters.category === '' || profissional.categoriaMain === filters.category;
-    const matchesRating = profissional.rating >= filters.minRating;
-    
-    // Filtro de especialidades
-    const matchesSpecialties = filters.specialties.length === 0 || 
-      filters.specialties.some(specialty => 
-        profissional.profissao.toLowerCase().includes(specialty.toLowerCase()) ||
-        profissional.servicosDestaque.some(s => s.toLowerCase().includes(specialty.toLowerCase()))
+    return { main: 'servicos-gerais', sub: 'outros' };
+  };
+
+  // Filtrar profissionais
+  const profissionaisFiltrados = professionals.filter(professional => {
+    const mapped = mapSpecialtyToCategory(professional.specialties);
+    const matchesCategoria = categoriaAtiva === 'todos' || mapped.main === categoriaAtiva;
+    const matchesSubcategoria = subcategoriaAtiva === 'todas' || mapped.sub === subcategoriaAtiva;
+    const matchesSearch = searchTerm === '' || 
+      professional.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      professional.specialties.some(specialty => 
+        specialty.toLowerCase().includes(searchTerm.toLowerCase())
       );
     
-    return matchesCategoria && matchesSubcategoria && matchesSearch && 
-           matchesCategory && matchesRating && matchesSpecialties;
+    return matchesCategoria && matchesSubcategoria && matchesSearch;
   });
+
+  // Função para gerar avatar baseado no nome
+  const getAvatarUrl = (name: string) => {
+    const initials = name.split(' ').map(n => n[0]).join('').toUpperCase();
+    return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=ea1d2c&color=fff&size=200&font-size=0.6`;
+  };
+
+  // Função para obter a primeira especialidade
+  const getPrimarySpecialty = (specialties: string[]) => {
+    return specialties[0] || 'Profissional';
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+          <p className="mt-4 text-gray-600">Carregando profissionais...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -503,6 +536,16 @@ export default function ProfissionaisPage() {
               className="flex overflow-x-auto scrollbar-hide py-4 -mb-px scroll-smooth"
             >
               <div className="flex space-x-1 min-w-full px-8">
+                <button
+                  className={`flex items-center gap-2 text-sm px-3 py-2 rounded-lg transition-colors whitespace-nowrap ${
+                    categoriaAtiva === 'todos'
+                      ? 'bg-red-500 text-white'
+                      : 'hover:bg-red-50'
+                  }`}
+                  onClick={() => handleCategoriaClick('todos')}
+                >
+                  Todos os Profissionais
+                </button>
                 {categorias.map((categoria) => (
                   <div key={categoria.id} className="relative group">
                     <button
@@ -517,7 +560,7 @@ export default function ProfissionaisPage() {
                       <ChevronDown className="w-4 h-4" />
                     </button>
                     
-                    {/* Dropdown de Subcategorias (aparece no hover) */}
+                    {/* Dropdown de Subcategorias */}
                     <div className="hidden group-hover:block absolute top-full left-0 mt-1 bg-white border rounded-lg shadow-lg py-2 min-w-[200px] z-20">
                       {categoria.subcategorias.map((sub) => (
                         <button
@@ -552,34 +595,51 @@ export default function ProfissionaisPage() {
       </div>
 
       <div className="container mx-auto px-4 py-6">
-        <h1 className="text-2xl font-bold mb-4">Profissionais em sua região</h1>
+        <h1 className="text-2xl font-bold mb-4">
+          Profissionais em sua região ({profissionaisFiltrados.length} profissionais encontrados)
+        </h1>
         
-        {/* Filtros Avançados */}
-        <ProfessionalFilters 
-          filters={filters}
-          onFiltersChange={setFilters}
-          onClearFilters={clearFilters}
-        />
+        {/* Filtros e Busca */}
+        <div className="flex flex-col md:flex-row justify-between mb-6 gap-4">
+          <div className="flex space-x-4">
+            <Button variant="outline" className="flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className=""><path d="M3 6h18"></path><path d="M7 12h10"></path><path d="M11 18h4"></path></svg>
+              Filtros
+            </Button>
+            <Button variant="outline" className="flex items-center gap-2">
+              Ordenar
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className=""><path d="m3 16 4 4 4-4"></path><path d="M7 20V4"></path><path d="m21 8-4-4-4 4"></path><path d="M17 4v16"></path></svg>
+            </Button>
+            <Button variant="outline" className="flex items-center gap-2">
+              Distância
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className=""><path d="m6 9 6 6 6-6"></path></svg>
+            </Button>
+          </div>
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+            <Input
+              placeholder="Buscar profissionais"
+              className="pl-10 w-full md:w-64"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+        </div>
         
         {/* Lista de Profissionais */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {profissionaisFiltrados.map((profissional, index) => (
+          {profissionaisFiltrados.map((professional, index) => (
             <Link 
-              key={profissional.id} 
-              href={`/profissionais/${profissional.id}/perfil`}
+              key={professional.id} 
+              href={`/profissionais/${professional.id}/perfil`}
               className="block group"
             >
               <div className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-200 group-hover:border-primary/20">
                 {/* Container da Imagem */}
                 <div className="relative h-48">
-                  {profissional.destaque && (
-                    <div className="absolute top-3 left-0 bg-red-600 text-white text-xs py-1 px-3 z-10">
-                      {profissional.destaque}
-                    </div>
-                  )}
                   <Image
-                    src={profissional.imagem}
-                    alt={profissional.nome}
+                    src={getAvatarUrl(professional.name)}
+                    alt={professional.name}
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     className="object-cover"
@@ -591,57 +651,60 @@ export default function ProfissionaisPage() {
                 <div className="p-4">
                   <div className="flex justify-between items-start mb-2">
                     <div>
-                      <h3 className="font-semibold text-lg group-hover:text-primary transition-colors">{profissional.nome}</h3>
+                      <h3 className="font-semibold text-lg group-hover:text-primary transition-colors">{professional.name}</h3>
                       <p className="text-sm text-gray-600">
-                        {profissional.profissao}
+                        {getPrimarySpecialty(professional.specialties)}
                       </p>
                     </div>
                     <div className="flex items-center">
                       <Star className="w-4 h-4 text-yellow-500" />
-                      <span className="text-sm ml-1">{profissional.rating}</span>
-                      <span className="text-xs text-gray-500 ml-1">({profissional.reviews})</span>
+                      <span className="text-sm ml-1">{professional.average_rating || 0}</span>
+                      <span className="text-xs text-gray-500 ml-1">({professional.total_reviews})</span>
                     </div>
                   </div>
-                  
-                  <p className="text-sm text-gray-600 mb-3">{profissional.descricao}</p>
 
                   <div className="flex flex-wrap gap-1 mb-3">
-                    {profissional.servicosDestaque.map((servico, idx) => (
+                    {professional.specialties.slice(0, 3).map((specialty, idx) => (
                       <span key={idx} className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
-                        {servico}
+                        {specialty}
                       </span>
                     ))}
                   </div>
                   
                   <div className="flex items-center text-sm text-gray-500 mb-3">
                     <Clock className="w-4 h-4 mr-1" />
-                    <span>{profissional.tempoMedioAtendimento}</span>
+                    <span>Disponível</span>
                     <span className="mx-2">•</span>
                     <MapPin className="w-4 h-4 mr-1" />
-                    <span>{profissional.distancia}</span>
+                    <span>São Paulo, SP</span>
                   </div>
                   
                   <div className="flex justify-between items-center">
                     <div>
                       <p className="font-medium text-primary">
-                        {profissional.precoHora}
-                        {profissional.precoHora !== 'Sob consulta' && <span className="text-sm text-gray-500">/hora</span>}
+                        Sob consulta
                       </p>
-                      {profissional.orcamento && (
-                        <p className="text-xs text-gray-500">{profissional.orcamento}</p>
-                      )}
+                      <p className="text-xs text-green-600">Disponível</p>
                     </div>
-                    {profissional.profissionalVerificado && (
                       <span className="text-xs bg-red-50 text-red-600 px-2 py-1 rounded">
                         Profissional verificado
                       </span>
-                    )}
                   </div>
                 </div>
               </div>
             </Link>
           ))}
         </div>
+
+        {profissionaisFiltrados.length === 0 && !loading && (
+          <div className="text-center py-12">
+            <div className="text-gray-400 mb-4">
+              <Briefcase className="w-16 h-16 mx-auto" />
+            </div>
+            <h3 className="text-lg font-semibold text-gray-600 mb-2">Nenhum profissional encontrado</h3>
+            <p className="text-gray-500">Tente ajustar os filtros ou termo de busca</p>
+          </div>
+        )}
       </div>
     </div>
   );

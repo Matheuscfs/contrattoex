@@ -40,7 +40,7 @@ async function testLoginOnly() {
         console.error(`   ❌ Erro no login:`, loginError.message);
         
         if (loginError.message.includes('Email not confirmed')) {
-          console.log(`   💡 Solução: Execute o script confirm-users.sql no Supabase SQL Editor`);
+          console.log(`   💡 Solução: Execute o script database/migrations/confirm-users.sql no Supabase SQL Editor`);
         }
         continue;
       }
@@ -92,7 +92,7 @@ async function testLoginOnly() {
   console.log('\n💡 Se houver erro "Email not confirmed":');
   console.log('   1. Acesse o Supabase Dashboard');
   console.log('   2. Vá em SQL Editor');
-  console.log('   3. Execute o script confirm-users.sql');
+  console.log('   3. Execute o script database/migrations/confirm-users.sql');
   console.log('   4. Execute este teste novamente');
   
   console.log('\n🌐 URLs para testar no navegador:');

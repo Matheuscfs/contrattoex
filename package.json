@@ -6,9 +6,15 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "setup": "node scripts/utils/setup-environment.js",
+    "verify-organization": "node scripts/utils/verify-organization.js",
+    "test:auth": "node scripts/test/test-login-simple.js",
+    "test:companies": "node scripts/test/test-cadastro-empresas.js",
+    "test:all": "npm run test:auth && npm run test:companies"
   },
   "dependencies": {
+    "@google-cloud/vertexai": "^1.10.0",
     "@googlemaps/js-api-loader": "^1.16.8",
     "@hookform/resolvers": "^5.0.1",
     "@radix-ui/react-alert-dialog": "^1.1.14",
@@ -42,6 +48,7 @@
     "date-fns": "^4.1.0",
     "embla-carousel-autoplay": "^8.6.0",
     "embla-carousel-react": "^8.6.0",
+    "google-auth-library": "^9.15.1",
     "lucide-react": "^0.358.0",
     "mercadopago": "^2.7.0",
     "next": "14.1.3",
