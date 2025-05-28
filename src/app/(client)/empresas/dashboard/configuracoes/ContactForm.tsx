@@ -22,20 +22,31 @@ const formSchema = z.object({
   facebook: z.string().optional(),
 })
 
-export function ContactForm() {
+interface ContactFormProps {
+  contact?: {
+    email?: string;
+    phone?: string;
+    whatsapp?: string;
+    instagram?: string;
+    facebook?: string;
+  };
+  companyId?: string;
+}
+
+export function ContactForm({ contact, companyId }: ContactFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: '',
-      phone: '',
-      whatsapp: '',
-      instagram: '',
-      facebook: '',
+      email: contact?.email || '',
+      phone: contact?.phone || '',
+      whatsapp: contact?.whatsapp || '',
+      instagram: contact?.instagram || '',
+      facebook: contact?.facebook || '',
     },
   })
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
+    console.log(values, companyId)
   }
 
   return (

@@ -2,11 +2,15 @@ import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { WebSocket, WebSocketServer } from "ws";
 
-// Inicializar Supabase
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+// Inicializar Supabase apenas se as variáveis estiverem disponíveis
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+let supabase: any = null;
+
+if (supabaseUrl && supabaseServiceKey) {
+  supabase = createClient(supabaseUrl, supabaseServiceKey);
+}
 
 // Armazenar conexões WebSocket ativas
 const clients = new Map<string, WebSocket>();
@@ -37,20 +41,26 @@ async function sendNotification(userId: string, notification: any) {
     ws.send(JSON.stringify(notification));
   }
 
-  // Salvar notificação no banco
-  await supabase.from("notifications").insert([
-    {
-      user_id: userId,
-      type: notification.type,
-      title: notification.title,
-      message: notification.message,
-      data: notification.data,
-    },
-  ]);
+  // Salvar notificação no banco apenas se supabase estiver configurado
+  if (supabase) {
+    await supabase.from("notifications").insert([
+      {
+        user_id: userId,
+        type: notification.type,
+        title: notification.title,
+        message: notification.message,
+        data: notification.data,
+      },
+    ]);
+  }
 }
 
 // GET /api/notifications
 export async function GET(request: Request) {
+  if (!supabase) {
+    return NextResponse.json({ error: "Supabase not configured" }, { status: 500 });
+  }
+
   const { searchParams } = new URL(request.url);
   const userId = searchParams.get("userId");
 
@@ -77,6 +87,10 @@ export async function PUT(
   request: Request,
   { params }: { params: { id: string } }
 ) {
+  if (!supabase) {
+    return NextResponse.json({ error: "Supabase not configured" }, { status: 500 });
+  }
+
   const { id } = params;
 
   const { error } = await supabase
@@ -96,6 +110,10 @@ export async function DELETE(
   request: Request,
   { params }: { params: { id: string } }
 ) {
+  if (!supabase) {
+    return NextResponse.json({ error: "Supabase not configured" }, { status: 500 });
+  }
+
   const { id } = params;
 
   const { error } = await supabase.from("notifications").delete().eq("id", id);

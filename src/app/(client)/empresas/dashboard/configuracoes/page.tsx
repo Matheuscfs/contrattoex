@@ -79,7 +79,7 @@ export default async function SettingsPage() {
           </TabsContent>
 
           <TabsContent value="hours">
-            <BusinessHoursForm hours={businessHours} companyId={company.id} />
+            <BusinessHoursForm hours={businessHours || []} companyId={company.id} />
           </TabsContent>
         </Tabs>
       </Card>

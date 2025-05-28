@@ -35,6 +35,13 @@ export async function POST(request: Request) {
       }
     }
 
+    if (!pusherServer) {
+      return NextResponse.json(
+        { error: 'Pusher não configurado' },
+        { status: 500 }
+      )
+    }
+
     const authResponse = pusherServer.authorizeChannel(socketId, channel)
     return NextResponse.json(authResponse)
   } catch (error) {

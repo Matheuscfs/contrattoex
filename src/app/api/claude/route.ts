@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getClaudeInstance, CLAUDE_MODELS, ClaudeMessage, ClaudeModel } from '@/lib/claude-vertex';
+import { getClaudeInstance } from '@/lib/claude-vertex';
+import { CLAUDE_MODELS, ClaudeMessage, ClaudeModel } from '@/lib/claude-types';
 
 export async function POST(request: NextRequest) {
   try {

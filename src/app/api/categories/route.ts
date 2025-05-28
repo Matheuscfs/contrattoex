@@ -76,7 +76,7 @@ export async function GET(request: NextRequest) {
       }
     ];
 
-    let categories = [];
+    let categories: any[] = [];
     
     if (type === 'professionals' || type === 'all') {
       categories = [...categories, ...professionalCategories];

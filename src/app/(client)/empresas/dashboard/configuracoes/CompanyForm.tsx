@@ -21,14 +21,23 @@ const formSchema = z.object({
   email: z.string().email('Email inválido'),
 })
 
-export function CompanyForm() {
+interface CompanyFormProps {
+  company?: {
+    name?: string;
+    cnpj?: string;
+    phone?: string;
+    email?: string;
+  };
+}
+
+export function CompanyForm({ company }: CompanyFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: '',
-      cnpj: '',
-      phone: '',
-      email: '',
+      name: company?.name || '',
+      cnpj: company?.cnpj || '',
+      phone: company?.phone || '',
+      email: company?.email || '',
     },
   })
 

@@ -24,22 +24,35 @@ const formSchema = z.object({
   state: z.string().length(2, 'Estado inválido'),
 })
 
-export function AddressForm() {
+interface AddressFormProps {
+  address?: {
+    cep?: string;
+    street?: string;
+    number?: string;
+    complement?: string;
+    neighborhood?: string;
+    city?: string;
+    state?: string;
+  };
+  companyId?: string;
+}
+
+export function AddressForm({ address, companyId }: AddressFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      cep: '',
-      street: '',
-      number: '',
-      complement: '',
-      neighborhood: '',
-      city: '',
-      state: '',
+      cep: address?.cep || '',
+      street: address?.street || '',
+      number: address?.number || '',
+      complement: address?.complement || '',
+      neighborhood: address?.neighborhood || '',
+      city: address?.city || '',
+      state: address?.state || '',
     },
   })
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
+    console.log(values, companyId)
   }
 
   return (

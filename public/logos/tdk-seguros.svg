@@ -1,0 +1,19 @@
+<svg width="200" height="80" viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="tdkGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#7C3AED;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#5B21B6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="200" height="80" fill="white" rx="8"/>
+  
+  <!-- Logo Icon - Shield for insurance -->
+  <path d="M35 15 L45 15 L50 25 L45 55 L25 55 L20 25 Z" fill="url(#tdkGradient)"/>
+  <text x="35" y="40" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="14" font-weight="bold">TDK</text>
+  
+  <!-- Company Name -->
+  <text x="60" y="30" fill="#7C3AED" font-family="Arial, sans-serif" font-size="16" font-weight="bold">TDK</text>
+  <text x="60" y="45" fill="#5B21B6" font-family="Arial, sans-serif" font-size="12" font-weight="normal">CORRETORA DE SEGUROS</text>
+</svg> 

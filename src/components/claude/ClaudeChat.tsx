@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useClaudeChat, useClaude } from '@/hooks/use-claude';
-import { CLAUDE_MODELS } from '@/lib/claude-vertex';
+import { CLAUDE_MODELS, ClaudeModel } from '@/lib/claude-types';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -19,7 +19,7 @@ export function ClaudeChat() {
   const [analysisText, setAnalysisText] = useState('');
   const [codeDescription, setCodeDescription] = useState('');
   const [selectedLanguage, setSelectedLanguage] = useState('typescript');
-  const [selectedModel, setSelectedModel] = useState(CLAUDE_MODELS.SONNET_4);
+  const [selectedModel, setSelectedModel] = useState<ClaudeModel>(CLAUDE_MODELS.SONNET_4);
 
   const handleSendMessage = async () => {
     if (!inputMessage.trim()) return;
@@ -51,7 +51,7 @@ export function ClaudeChat() {
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">
               <span className="text-sm font-medium">Modelo:</span>
-              <Select value={selectedModel} onValueChange={setSelectedModel}>
+              <Select value={selectedModel} onValueChange={(value) => setSelectedModel(value as ClaudeModel)}>
                 <SelectTrigger className="w-48">
                   <SelectValue />
                 </SelectTrigger>

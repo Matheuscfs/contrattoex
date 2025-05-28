@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { ClaudeMessage, ClaudeModel, ClaudeResponse, CLAUDE_MODELS } from '@/lib/claude-vertex';
+import { ClaudeMessage, ClaudeModel, ClaudeResponse, CLAUDE_MODELS } from '@/lib/claude-types';
 
 interface UseClaudeOptions {
   model?: ClaudeModel;

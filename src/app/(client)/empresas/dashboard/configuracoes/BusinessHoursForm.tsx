@@ -52,7 +52,12 @@ const days: { id: DayId; label: string }[] = [
   { id: 'sunday', label: 'Domingo' },
 ]
 
-export function BusinessHoursForm() {
+interface BusinessHoursFormProps {
+  hours?: any[];
+  companyId?: string;
+}
+
+export function BusinessHoursForm({ hours, companyId }: BusinessHoursFormProps) {
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -67,7 +72,7 @@ export function BusinessHoursForm() {
   })
 
   function onSubmit(values: FormData) {
-    console.log(values)
+    console.log(values, companyId, hours)
   }
 
   return (
