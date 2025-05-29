@@ -229,6 +229,46 @@ export default function ServicosPage() {
         ]
       },
       {
+        id: '66864196-2cec-4321-abc3-0610a1eb4281',
+        name: 'Business Consultoria & Governança',
+        description: 'Empresa especializada em gestão empresarial, consultoria e soluções integradas. Oferecemos serviços de contabilidade, auditoria, consultoria atuarial, gestão de ativos intangíveis e treinamento em desenvolvimento profissional.',
+        logo_url: '/business-logo.png',
+        rating: 4.9,
+        total_reviews: 234,
+        categories: ['consultoria', 'contabilidade', 'gestao'],
+        business_type: 'Consultoria & Governança',
+        company_addresses: [
+          {
+            city: 'Cascavel',
+            state: 'PR',
+            neighborhood: 'Centro'
+          }
+        ],
+        company_contacts: [
+          {
+            phone: '(45) 98822-4299',
+            email: 'supervisao@businessgestao.com.br'
+          }
+        ],
+        company_services: [
+          {
+            name: 'Consultoria Contábil',
+            price: 300.00,
+            category: 'contabilidade'
+          },
+          {
+            name: 'Gestão Empresarial',
+            price: 450.00,
+            category: 'consultoria'
+          },
+          {
+            name: 'Auditoria e Consultoria Atuarial',
+            price: 0,
+            category: 'consultoria'
+          }
+        ]
+      },
+      {
         id: 'd3ad1748-b338-4e7e-81f8-9258521eb49f',
         name: 'BR CENTER TRUCK',
         description: 'Centro automotivo especializado em veículos pesados e caminhões',
@@ -602,354 +642,354 @@ export default function ServicosPage() {
       )}
 
       {/* Hero Section */}
-      <div>
-        {/* Barra de Categorias */}
-        <div className="border-b sticky top-0 bg-white z-50">
-          <div className="container mx-auto px-4">
-            <div className="relative">
-              {/* Botão de navegação esquerda */}
-              <button
-                onClick={() => scrollCategories('left')}
-                className="absolute left-0 top-1/2 -translate-y-1/2 z-60 bg-white/80 hover:bg-white rounded-full p-1 shadow-md"
-              >
-                <ChevronLeft className="w-6 h-6 text-gray-600" />
-              </button>
+    <div>
+      {/* Barra de Categorias */}
+      <div className="border-b sticky top-0 bg-white z-50">
+        <div className="container mx-auto px-4">
+          <div className="relative">
+            {/* Botão de navegação esquerda */}
+            <button
+              onClick={() => scrollCategories('left')}
+              className="absolute left-0 top-1/2 -translate-y-1/2 z-60 bg-white/80 hover:bg-white rounded-full p-1 shadow-md"
+            >
+              <ChevronLeft className="w-6 h-6 text-gray-600" />
+            </button>
 
-              {/* Container das categorias com ref */}
-              <div 
-                ref={categoriasContainerRef}
-                className="flex overflow-x-auto scrollbar-hide py-6 -mb-px scroll-smooth"
-              >
-                <div className="flex space-x-1 min-w-full px-8">
-                  <button
-                    className={`flex items-center gap-2 text-sm px-3 py-2 rounded-lg transition-colors whitespace-nowrap ${
-                      categoriaAtiva === 'todas'
-                        ? 'bg-red-500 text-white'
-                        : 'hover:bg-red-50'
-                    }`}
-                    onClick={() => handleCategoriaClick('todas')}
-                  >
-                    Todas as Categorias
-                  </button>
-                  {categorias.map((categoria) => (
-                    <div key={categoria.id} className="relative group">
-                      <button
-                        className={`flex items-center gap-2 text-sm px-3 py-2 rounded-lg transition-colors whitespace-nowrap ${
-                          categoriaAtiva === categoria.id
-                            ? 'bg-red-500 text-white'
-                            : 'hover:bg-red-50'
-                        }`}
-                        onClick={() => handleCategoriaClick(categoria.id)}
-                      >
-                        {categoria.nome}
-                        <ChevronDown className="w-4 h-4" />
-                      </button>
-                      
-                      {/* Dropdown de Subcategorias */}
-                      <div className="hidden group-hover:block absolute top-full left-0 mt-1 bg-white border rounded-lg shadow-lg py-2 min-w-[200px] z-70">
-                        {categoria.subcategorias.map((sub) => (
-                          <button
-                            key={sub.id}
-                            className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-50 ${
-                              subcategoriaAtiva === sub.id ? 'text-red-500 bg-red-50' : ''
-                            }`}
-                            onClick={() => handleSubcategoriaClick(sub.id)}
-                          >
-                            {sub.nome}
-                          </button>
-                        ))}
-                      </div>
+            {/* Container das categorias com ref */}
+            <div 
+              ref={categoriasContainerRef}
+              className="flex overflow-x-auto scrollbar-hide py-6 -mb-px scroll-smooth"
+            >
+              <div className="flex space-x-1 min-w-full px-8">
+                <button
+                  className={`flex items-center gap-2 text-sm px-3 py-2 rounded-lg transition-colors whitespace-nowrap ${
+                    categoriaAtiva === 'todas'
+                      ? 'bg-red-500 text-white'
+                      : 'hover:bg-red-50'
+                  }`}
+                  onClick={() => handleCategoriaClick('todas')}
+                >
+                  Todas as Categorias
+                </button>
+                {categorias.map((categoria) => (
+                  <div key={categoria.id} className="relative group">
+                    <button
+                      className={`flex items-center gap-2 text-sm px-3 py-2 rounded-lg transition-colors whitespace-nowrap ${
+                        categoriaAtiva === categoria.id
+                          ? 'bg-red-500 text-white'
+                          : 'hover:bg-red-50'
+                      }`}
+                      onClick={() => handleCategoriaClick(categoria.id)}
+                    >
+                      {categoria.nome}
+                      <ChevronDown className="w-4 h-4" />
+                    </button>
+                    
+                    {/* Dropdown de Subcategorias */}
+                    <div className="hidden group-hover:block absolute top-full left-0 mt-1 bg-white border rounded-lg shadow-lg py-2 min-w-[200px] z-70">
+                      {categoria.subcategorias.map((sub) => (
+                        <button
+                          key={sub.id}
+                          className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-50 ${
+                            subcategoriaAtiva === sub.id ? 'text-red-500 bg-red-50' : ''
+                          }`}
+                          onClick={() => handleSubcategoriaClick(sub.id)}
+                        >
+                          {sub.nome}
+                        </button>
+                      ))}
                     </div>
-                  ))}
-                </div>
+                  </div>
+                ))}
               </div>
-
-              {/* Botão de navegação direita */}
-              <button
-                onClick={() => scrollCategories('right')}
-                className="absolute right-0 top-1/2 -translate-y-1/2 z-60 bg-white/80 hover:bg-white rounded-full p-1 shadow-md"
-              >
-                <ChevronRight className="w-6 h-6 text-gray-600" />
-              </button>
-
-              {/* Gradientes para indicar rolagem */}
-              <div className="absolute left-8 top-0 bottom-0 w-8 bg-gradient-to-r from-white to-transparent pointer-events-none" />
-              <div className="absolute right-8 top-0 bottom-0 w-8 bg-gradient-to-l from-white to-transparent pointer-events-none" />
             </div>
+
+            {/* Botão de navegação direita */}
+            <button
+              onClick={() => scrollCategories('right')}
+              className="absolute right-0 top-1/2 -translate-y-1/2 z-60 bg-white/80 hover:bg-white rounded-full p-1 shadow-md"
+            >
+              <ChevronRight className="w-6 h-6 text-gray-600" />
+            </button>
+
+            {/* Gradientes para indicar rolagem */}
+            <div className="absolute left-8 top-0 bottom-0 w-8 bg-gradient-to-r from-white to-transparent pointer-events-none" />
+            <div className="absolute right-8 top-0 bottom-0 w-8 bg-gradient-to-l from-white to-transparent pointer-events-none" />
           </div>
         </div>
+      </div>
 
-        <div className="container mx-auto px-4 py-6">
-          <div className="mb-4">
-            <h1 className="text-2xl font-bold mb-2">
-              Serviços em sua região
-            </h1>
-            <div className="flex items-center gap-2 text-gray-600">
-              <span>{empresasFinais.length} empresas encontradas</span>
-              {activeFiltersCount > 0 && (
-                <>
-                  <span>•</span>
-                  <span className="text-blue-600">{activeFiltersCount} filtro(s) aplicado(s)</span>
-                </>
-              )}
-              {companies.length !== empresasFinais.length && (
-                <>
-                  <span>•</span>
-                  <span className="text-gray-500">
-                    {companies.length - empresasFinais.length} empresas filtradas
-                  </span>
-                </>
-              )}
-            </div>
+      <div className="container mx-auto px-4 py-6">
+        <div className="mb-4">
+          <h1 className="text-2xl font-bold mb-2">
+            Serviços em sua região
+          </h1>
+          <div className="flex items-center gap-2 text-gray-600">
+            <span>{empresasFinais.length} empresas encontradas</span>
+            {activeFiltersCount > 0 && (
+              <>
+                <span>•</span>
+                <span className="text-blue-600">{activeFiltersCount} filtro(s) aplicado(s)</span>
+              </>
+            )}
+            {companies.length !== empresasFinais.length && (
+              <>
+                <span>•</span>
+                <span className="text-gray-500">
+                  {companies.length - empresasFinais.length} empresas filtradas
+                </span>
+              </>
+            )}
           </div>
-          
-          {/* Filtros e Busca */}
-          <div className="flex flex-col md:flex-row justify-between mb-6 gap-4">
-            <div className="flex flex-wrap gap-3">
-              {/* Filtros Button */}
-              <div className="relative">
-                <Button 
-                  variant={showFilters ? "default" : (activeFiltersCount > 0 ? "default" : "outline")} 
-                  className="flex items-center gap-2"
-                  onClick={() => setShowFilters(!showFilters)}
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M3 6h18"></path><path d="M7 12h10"></path><path d="M11 18h4"></path>
-                  </svg>
-                  Filtros {activeFiltersCount > 0 && `(${activeFiltersCount})`} {showFilters && '✓'}
-                </Button>
-              </div>
+        </div>
+        
+        {/* Filtros e Busca */}
+        <div className="flex flex-col md:flex-row justify-between mb-6 gap-4">
+          <div className="flex flex-wrap gap-3">
+            {/* Filtros Button */}
+            <div className="relative">
+              <Button 
+                variant={showFilters ? "default" : (activeFiltersCount > 0 ? "default" : "outline")} 
+                className="flex items-center gap-2"
+                onClick={() => setShowFilters(!showFilters)}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M3 6h18"></path><path d="M7 12h10"></path><path d="M11 18h4"></path>
+                </svg>
+                Filtros {activeFiltersCount > 0 && `(${activeFiltersCount})`} {showFilters && '✓'}
+              </Button>
+            </div>
 
-              {/* Ordenar Dropdown */}
-              <div className="relative group">
-                <Button variant="outline" className="flex items-center gap-2">
-                  Ordenar: {sortBy === 'rating' ? 'Avaliação' : sortBy === 'name' ? 'Nome' : sortBy === 'price' ? 'Preço' : 'Avaliações'}
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="m6 9 6 6 6-6"></path>
-                  </svg>
-                </Button>
-                <div className="hidden group-hover:block absolute top-full left-0 mt-1 bg-white border rounded-lg shadow-lg py-2 min-w-[150px] z-20">
-                  <button
-                    onClick={() => handleSortChange('rating')}
-                    className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-50 ${sortBy === 'rating' ? 'text-blue-600 bg-blue-50' : ''}`}
-                  >
-                    Avaliação {sortBy === 'rating' && (sortOrder === 'desc' ? '↓' : '↑')}
-                  </button>
-                  <button
-                    onClick={() => handleSortChange('name')}
-                    className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-50 ${sortBy === 'name' ? 'text-blue-600 bg-blue-50' : ''}`}
-                  >
-                    Nome {sortBy === 'name' && (sortOrder === 'desc' ? '↓' : '↑')}
-                  </button>
-                  <button
-                    onClick={() => handleSortChange('price')}
-                    className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-50 ${sortBy === 'price' ? 'text-blue-600 bg-blue-50' : ''}`}
-                  >
-                    Preço {sortBy === 'price' && (sortOrder === 'desc' ? '↓' : '↑')}
-                  </button>
-                  <button
-                    onClick={() => handleSortChange('reviews')}
-                    className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-50 ${sortBy === 'reviews' ? 'text-blue-600 bg-blue-50' : ''}`}
-                  >
-                    Nº Avaliações {sortBy === 'reviews' && (sortOrder === 'desc' ? '↓' : '↑')}
-                  </button>
-                </div>
-              </div>
-
-              {/* Distância - pode ser implementado depois */}
+            {/* Ordenar Dropdown */}
+            <div className="relative group">
               <Button variant="outline" className="flex items-center gap-2">
-                Distância
+                Ordenar: {sortBy === 'rating' ? 'Avaliação' : sortBy === 'name' ? 'Nome' : sortBy === 'price' ? 'Preço' : 'Avaliações'}
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="m6 9 6 6 6-6"></path>
                 </svg>
               </Button>
+              <div className="hidden group-hover:block absolute top-full left-0 mt-1 bg-white border rounded-lg shadow-lg py-2 min-w-[150px] z-20">
+                <button
+                  onClick={() => handleSortChange('rating')}
+                  className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-50 ${sortBy === 'rating' ? 'text-blue-600 bg-blue-50' : ''}`}
+                >
+                  Avaliação {sortBy === 'rating' && (sortOrder === 'desc' ? '↓' : '↑')}
+                </button>
+                <button
+                  onClick={() => handleSortChange('name')}
+                  className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-50 ${sortBy === 'name' ? 'text-blue-600 bg-blue-50' : ''}`}
+                >
+                  Nome {sortBy === 'name' && (sortOrder === 'desc' ? '↓' : '↑')}
+                </button>
+                <button
+                  onClick={() => handleSortChange('price')}
+                  className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-50 ${sortBy === 'price' ? 'text-blue-600 bg-blue-50' : ''}`}
+                >
+                  Preço {sortBy === 'price' && (sortOrder === 'desc' ? '↓' : '↑')}
+                </button>
+                <button
+                  onClick={() => handleSortChange('reviews')}
+                  className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-50 ${sortBy === 'reviews' ? 'text-blue-600 bg-blue-50' : ''}`}
+                >
+                  Nº Avaliações {sortBy === 'reviews' && (sortOrder === 'desc' ? '↓' : '↑')}
+                </button>
+              </div>
             </div>
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
-              <Input
-                placeholder="Buscar serviços"
-                className="pl-10 w-full md:w-64"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
+
+            {/* Distância - pode ser implementado depois */}
+            <Button variant="outline" className="flex items-center gap-2">
+              Distância
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="m6 9 6 6 6-6"></path>
+              </svg>
+            </Button>
+          </div>
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+            <Input
+              placeholder="Buscar serviços"
+              className="pl-10 w-full md:w-64"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+        </div>
+        
+        {/* Painel de Filtros Avançados */}
+        {showFilters && (
+          <div className="bg-gray-50 border rounded-lg p-4 mb-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {/* Filtro por Avaliação */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Avaliação Mínima
+                </label>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="range"
+                    min="0"
+                    max="5"
+                    step="0.5"
+                    value={ratingFilter}
+                    onChange={(e) => setRatingFilter(Number(e.target.value))}
+                    className="flex-1"
+                  />
+                  <span className="text-sm font-medium w-8">{ratingFilter}★</span>
+                </div>
+              </div>
+
+              {/* Filtro por Faixa de Preço */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Faixa de Preço (R$)
+                </label>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="number"
+                    placeholder="Min"
+                    value={priceRange[0]}
+                    onChange={(e) => setPriceRange([Number(e.target.value), priceRange[1]])}
+                    className="w-20 px-2 py-1 border rounded text-sm"
+                  />
+                  <span>-</span>
+                  <input
+                    type="number"
+                    placeholder="Max"
+                    value={priceRange[1]}
+                    onChange={(e) => setPriceRange([priceRange[0], Number(e.target.value)])}
+                    className="w-20 px-2 py-1 border rounded text-sm"
+                  />
+                </div>
+              </div>
+
+              {/* Botões de Ação */}
+              <div className="flex items-end gap-2">
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => {
+                    setRatingFilter(0);
+                    setPriceRange([0, 50000]);
+                    setCategoriaAtiva('todas');
+                    setSubcategoriaAtiva('todas');
+                    setSearchTerm('');
+                  }}
+                >
+                  Limpar Filtros
+                </Button>
+                <Button 
+                  size="sm"
+                  onClick={() => setShowFilters(false)}
+                >
+                  Aplicar
+                </Button>
+              </div>
+            </div>
+
+            {/* Indicadores de Filtros Ativos */}
+            <div className="flex flex-wrap gap-2 mt-3">
+              {ratingFilter > 0 && (
+                <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
+                  Avaliação ≥ {ratingFilter}★
+                </span>
+              )}
+              {(priceRange[0] > 0 || priceRange[1] < 50000) && (
+                <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
+                  Preço: R$ {priceRange[0]} - R$ {priceRange[1]}
+                </span>
+              )}
+              {categoriaAtiva !== 'todas' && (
+                <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
+                  Categoria: {categorias.find(c => c.id === categoriaAtiva)?.nome}
+                </span>
+              )}
             </div>
           </div>
-          
-          {/* Painel de Filtros Avançados */}
-          {showFilters && (
-            <div className="bg-gray-50 border rounded-lg p-4 mb-6">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {/* Filtro por Avaliação */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Avaliação Mínima
-                  </label>
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="range"
-                      min="0"
-                      max="5"
-                      step="0.5"
-                      value={ratingFilter}
-                      onChange={(e) => setRatingFilter(Number(e.target.value))}
-                      className="flex-1"
-                    />
-                    <span className="text-sm font-medium w-8">{ratingFilter}★</span>
-                  </div>
+        )}
+        
+        {/* Lista de Empresas */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {empresasFinais.map((empresa, index) => (
+            <Link 
+              key={empresa.id} 
+              href={`/empresas/${empresa.id}/perfil`}
+              className="block group"
+            >
+              <div className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-200 group-hover:border-primary/20">
+                {/* Container da Imagem */}
+                <div className="relative h-48">
+                  <Image
+                    src={getCompanyLogo(empresa.id, empresa.name)}
+                    alt={empresa.name || 'Logo da empresa'}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    className="object-cover"
+                    priority={index < 3}
+                  />
                 </div>
-
-                {/* Filtro por Faixa de Preço */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Faixa de Preço (R$)
-                  </label>
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="number"
-                      placeholder="Min"
-                      value={priceRange[0]}
-                      onChange={(e) => setPriceRange([Number(e.target.value), priceRange[1]])}
-                      className="w-20 px-2 py-1 border rounded text-sm"
-                    />
-                    <span>-</span>
-                    <input
-                      type="number"
-                      placeholder="Max"
-                      value={priceRange[1]}
-                      onChange={(e) => setPriceRange([priceRange[0], Number(e.target.value)])}
-                      className="w-20 px-2 py-1 border rounded text-sm"
-                    />
-                  </div>
-                </div>
-
-                {/* Botões de Ação */}
-                <div className="flex items-end gap-2">
-                  <Button 
-                    variant="outline" 
-                    size="sm"
-                    onClick={() => {
-                      setRatingFilter(0);
-                      setPriceRange([0, 50000]);
-                      setCategoriaAtiva('todas');
-                      setSubcategoriaAtiva('todas');
-                      setSearchTerm('');
-                    }}
-                  >
-                    Limpar Filtros
-                  </Button>
-                  <Button 
-                    size="sm"
-                    onClick={() => setShowFilters(false)}
-                  >
-                    Aplicar
-                  </Button>
-                </div>
-              </div>
-
-              {/* Indicadores de Filtros Ativos */}
-              <div className="flex flex-wrap gap-2 mt-3">
-                {ratingFilter > 0 && (
-                  <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
-                    Avaliação ≥ {ratingFilter}★
-                  </span>
-                )}
-                {(priceRange[0] > 0 || priceRange[1] < 50000) && (
-                  <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
-                    Preço: R$ {priceRange[0]} - R$ {priceRange[1]}
-                  </span>
-                )}
-                {categoriaAtiva !== 'todas' && (
-                  <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
-                    Categoria: {categorias.find(c => c.id === categoriaAtiva)?.nome}
-                  </span>
-                )}
-              </div>
-            </div>
-          )}
-          
-          {/* Lista de Empresas */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {empresasFinais.map((empresa, index) => (
-              <Link 
-                key={empresa.id} 
-                href={`/empresas/${empresa.id}/perfil`}
-                className="block group"
-              >
-                <div className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-200 group-hover:border-primary/20">
-                  {/* Container da Imagem */}
-                  <div className="relative h-48">
-                    <Image
-                      src={getCompanyLogo(empresa.id, empresa.name)}
-                      alt={empresa.name || 'Logo da empresa'}
-                      fill
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      className="object-cover"
-                      priority={index < 3}
-                    />
+                
+                {/* Conteúdo */}
+                <div className="p-4">
+                  <div className="flex justify-between items-start mb-2">
+                    <div>
+                      <h3 className="font-semibold text-lg group-hover:text-primary transition-colors">{empresa.name}</h3>
+                      <p className="text-sm text-gray-600">
+                        {empresa.business_type}
+                      </p>
+                    </div>
+                    <div className="flex items-center">
+                      <Star className="w-4 h-4 text-yellow-500" />
+                      <span className="text-sm ml-1">{empresa.rating}</span>
+                      <span className="text-xs text-gray-500 ml-1">({empresa.total_reviews})</span>
+                    </div>
                   </div>
                   
-                  {/* Conteúdo */}
-                  <div className="p-4">
-                    <div className="flex justify-between items-start mb-2">
-                      <div>
-                        <h3 className="font-semibold text-lg group-hover:text-primary transition-colors">{empresa.name}</h3>
-                        <p className="text-sm text-gray-600">
-                          {empresa.business_type}
-                        </p>
-                      </div>
-                      <div className="flex items-center">
-                        <Star className="w-4 h-4 text-yellow-500" />
-                        <span className="text-sm ml-1">{empresa.rating}</span>
-                        <span className="text-xs text-gray-500 ml-1">({empresa.total_reviews})</span>
-                      </div>
-                    </div>
-                    
-                    <p className="text-sm text-gray-600 mb-3">{empresa.description}</p>
+                  <p className="text-sm text-gray-600 mb-3">{empresa.description}</p>
 
-                    <div className="flex flex-wrap gap-1 mb-3">
-                      {getHighlightServices(empresa.company_services).map((servico, idx) => (
-                        <span key={idx} className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
-                          {servico}
-                        </span>
-                      ))}
-                    </div>
-                    
-                    <div className="flex items-center text-sm text-gray-500 mb-3">
-                      <Clock className="w-4 h-4 mr-1" />
-                      <span>Consulte horários</span>
-                      <span className="mx-2">•</span>
-                      <MapPin className="w-4 h-4 mr-1" />
-                      <span>
-                        {empresa.company_addresses?.[0]?.city || 'São Paulo'}, {empresa.company_addresses?.[0]?.state || 'SP'}
+                  <div className="flex flex-wrap gap-1 mb-3">
+                    {getHighlightServices(empresa.company_services).map((servico, idx) => (
+                      <span key={idx} className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
+                        {servico}
                       </span>
+                    ))}
+                  </div>
+                  
+                  <div className="flex items-center text-sm text-gray-500 mb-3">
+                    <Clock className="w-4 h-4 mr-1" />
+                    <span>Consulte horários</span>
+                    <span className="mx-2">•</span>
+                    <MapPin className="w-4 h-4 mr-1" />
+                    <span>
+                      {empresa.company_addresses?.[0]?.city || 'São Paulo'}, {empresa.company_addresses?.[0]?.state || 'SP'}
+                    </span>
+                  </div>
+                  
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <p className="font-medium text-primary">
+                        {getAveragePrice(empresa.company_services)}
+                        {getAveragePrice(empresa.company_services) !== 'Sob consulta' && <span className="text-sm text-gray-500">/serviço</span>}
+                      </p>
                     </div>
-                    
-                    <div className="flex justify-between items-center">
-                      <div>
-                        <p className="font-medium text-primary">
-                          {getAveragePrice(empresa.company_services)}
-                          {getAveragePrice(empresa.company_services) !== 'Sob consulta' && <span className="text-sm text-gray-500">/serviço</span>}
-                        </p>
-                      </div>
-                      <span className="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded">
-                        {empresa.company_services?.length || 0} serviços
-                      </span>
-                    </div>
+                    <span className="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded">
+                      {empresa.company_services?.length || 0} serviços
+                    </span>
                   </div>
                 </div>
-              </Link>
-            ))}
-          </div>
-
-          {empresasFinais.length === 0 && !loading && (
-            <div className="text-center py-12">
-              <div className="text-gray-400 mb-4">
-                <Search className="w-16 h-16 mx-auto" />
               </div>
-              <h3 className="text-lg font-semibold text-gray-600 mb-2">Nenhuma empresa encontrada</h3>
-              <p className="text-gray-500">Tente ajustar os filtros ou termo de busca</p>
+            </Link>
+          ))}
+        </div>
+
+        {empresasFinais.length === 0 && !loading && (
+          <div className="text-center py-12">
+            <div className="text-gray-400 mb-4">
+              <Search className="w-16 h-16 mx-auto" />
             </div>
-          )}
+            <h3 className="text-lg font-semibold text-gray-600 mb-2">Nenhuma empresa encontrada</h3>
+            <p className="text-gray-500">Tente ajustar os filtros ou termo de busca</p>
+          </div>
+        )}
         </div>
       </div>
     </div>

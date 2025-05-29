@@ -3,14 +3,44 @@
 import * as React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { MapPin, Clock, Search, Star, Briefcase, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
+import { MapPin, Clock, Search, Star, Briefcase, ChevronDown, ChevronLeft, ChevronRight, Crown, Badge as BadgeIcon, Phone, Mail, Award, CheckCircle, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent } from '@/components/ui/card';
 import { useState, useRef, useEffect } from 'react';
 import { useProfessionals } from '@/hooks/api/useProfessionals';
 import { ProfessionalFilters } from '@/components/filters/ProfessionalFilters';
 import { createClient } from '@/lib/supabase/client';
+
+// Dados do profissional patrocinado
+const matheusProfile = {
+  id: 'matheus-celso-contratto',
+  name: 'Matheus Celso',
+  company: 'Contratto',
+  position: 'CEO',
+  age: 25,
+  experience: '2 anos',
+  email: 'supervisor@contrattoex.com',
+  phone: '45984157928',
+  address: {
+    street: 'Rua Paraná',
+    number: '2781',
+    neighborhood: 'Centro',
+    city: 'Cascavel',
+    state: 'PR'
+  },
+  specialties: ['Contabilidade', 'Fiscal', 'Societário', 'Paralegal'],
+  description: 'CEO da Contratto com 2 anos de experiência em contabilidade. Especialista em serviços fiscais, societários e paralegal, oferecendo soluções completas para empresas e profissionais autônomos.',
+  image: '/matheus-celso.png',
+  rating: 4.9,
+  reviews: 47,
+  isSponsored: true,
+  verified: true,
+  available: true,
+  responseTime: '< 2 horas'
+};
 
 const categorias = [
   {
@@ -40,6 +70,17 @@ const categorias = [
       { id: 'seguranca', nome: 'Técnicos em Segurança Eletrônica' },
       { id: 'solar', nome: 'Instaladores de Painéis Solares' },
       { id: 'antenas', nome: 'Instaladores de Antenas & Redes' }
+    ]
+  },
+  {
+    id: 'contabilidade',
+    nome: 'Contabilidade & Finanças',
+    subcategorias: [
+      { id: 'contadores', nome: 'Contadores' },
+      { id: 'consultores-fiscais', nome: 'Consultores Fiscais' },
+      { id: 'advogados-tributarios', nome: 'Advogados Tributários' },
+      { id: 'paralegal', nome: 'Serviços Paralegal' },
+      { id: 'societario', nome: 'Consultoria Societária' }
     ]
   },
   {
@@ -165,6 +206,171 @@ function ProfissionalCardSkeleton() {
         <Skeleton className="h-10 w-24" />
       </div>
     </div>
+  );
+}
+
+// Componente do Perfil Patrocinado
+function ProfilePatrocinado() {
+  const formatPhone = (phone: string) => {
+    return phone.replace(/^(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+  };
+
+  return (
+    <Link href="/profissionais/matheus-celso" className="block">
+      <Card className="relative overflow-hidden mb-8 border-2 border-gradient-to-r from-yellow-400 to-yellow-600 shadow-xl hover:shadow-2xl transition-all duration-300 cursor-pointer group">
+        {/* Badge de Patrocinado */}
+        <div className="absolute top-4 right-4 z-10">
+          <Badge className="bg-gradient-to-r from-yellow-400 to-yellow-600 text-black font-semibold">
+            <Crown className="w-3 h-3 mr-1" />
+            PATROCINADO
+          </Badge>
+        </div>
+
+        {/* Efeito de brilho */}
+        <div className="absolute inset-0 bg-gradient-to-r from-yellow-400/10 via-transparent to-yellow-600/10 pointer-events-none group-hover:from-yellow-400/20 group-hover:to-yellow-600/20 transition-all duration-300">
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-yellow-400 to-yellow-600"></div>
+        </div>
+
+        <CardContent className="p-6">
+          <div className="flex flex-col lg:flex-row gap-6">
+            {/* Foto e Informações Básicas */}
+            <div className="flex flex-col md:flex-row gap-4 lg:flex-col lg:w-1/3">
+              <div className="relative">
+                <div className="w-32 h-32 md:w-40 md:h-40 relative mx-auto lg:mx-0">
+                  <Image
+                    src={matheusProfile.image}
+                    alt={matheusProfile.name}
+                    fill
+                    className="rounded-full object-cover border-4 border-yellow-400 group-hover:border-yellow-500 transition-all duration-300"
+                    priority
+                  />
+                  {matheusProfile.verified && (
+                    <div className="absolute -bottom-2 -right-2 bg-blue-600 rounded-full p-2">
+                      <CheckCircle className="w-4 h-4 text-white" />
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="text-center lg:text-left">
+                <div className="flex items-center gap-2 justify-center lg:justify-start mb-2">
+                  <h2 className="text-2xl font-bold group-hover:text-yellow-700 transition-colors duration-300">{matheusProfile.name}</h2>
+                  <Sparkles className="w-5 h-5 text-yellow-500" />
+                </div>
+                <p className="text-lg text-gray-600 mb-1">{matheusProfile.position} • {matheusProfile.company}</p>
+                <p className="text-sm text-gray-500 mb-3">{matheusProfile.age} anos • {matheusProfile.experience} de experiência</p>
+                
+                <div className="flex items-center justify-center lg:justify-start gap-2 mb-3">
+                  <div className="flex items-center">
+                    <Star className="w-4 h-4 text-yellow-500 fill-current" />
+                    <span className="text-sm font-medium ml-1">{matheusProfile.rating}</span>
+                    <span className="text-xs text-gray-500 ml-1">({matheusProfile.reviews} avaliações)</span>
+                  </div>
+                </div>
+
+                {matheusProfile.available && (
+                  <div className="flex items-center justify-center lg:justify-start gap-1 text-green-600 text-sm">
+                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                    <span>Disponível agora</span>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Informações Detalhadas */}
+            <div className="flex-1 space-y-4">
+              <div>
+                <h3 className="font-semibold text-lg mb-2">Sobre o Profissional</h3>
+                <p className="text-gray-600 leading-relaxed">{matheusProfile.description}</p>
+              </div>
+
+              <div>
+                <h4 className="font-semibold mb-2">Especialidades</h4>
+                <div className="flex flex-wrap gap-2">
+                  {matheusProfile.specialties.map((specialty, index) => (
+                    <Badge key={index} variant="secondary" className="bg-blue-50 text-blue-700">
+                      {specialty}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <h4 className="font-semibold mb-2">Localização</h4>
+                  <div className="flex items-center text-gray-600 text-sm">
+                    <MapPin className="w-4 h-4 mr-2 flex-shrink-0" />
+                    <span>
+                      {matheusProfile.address.street}, {matheusProfile.address.number}<br />
+                      {matheusProfile.address.neighborhood}, {matheusProfile.address.city} - {matheusProfile.address.state}
+                    </span>
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="font-semibold mb-2">Contato</h4>
+                  <div className="space-y-1">
+                    <div className="flex items-center text-gray-600 text-sm">
+                      <Phone className="w-4 h-4 mr-2 flex-shrink-0" />
+                      <span>{formatPhone(matheusProfile.phone)}</span>
+                    </div>
+                    <div className="flex items-center text-gray-600 text-sm">
+                      <Mail className="w-4 h-4 mr-2 flex-shrink-0" />
+                      <span className="break-all">{matheusProfile.email}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between pt-4 border-t">
+                <div className="flex items-center gap-4 text-sm text-gray-600">
+                  <div className="flex items-center gap-1">
+                    <Clock className="w-4 h-4" />
+                    <span>Responde em {matheusProfile.responseTime}</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Award className="w-4 h-4" />
+                    <span>Profissional Verificado</span>
+                  </div>
+                </div>
+                
+                <div className="flex gap-3">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      window.open(`tel:${matheusProfile.phone}`, '_self');
+                    }}
+                  >
+                    <Phone className="w-4 h-4 mr-2" />
+                    Ligar
+                  </Button>
+                  <Button 
+                    size="sm" 
+                    className="bg-gradient-to-r from-yellow-400 to-yellow-600 text-black hover:from-yellow-500 hover:to-yellow-700"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      window.open(`mailto:${matheusProfile.email}`, '_self');
+                    }}
+                  >
+                    <Mail className="w-4 h-4 mr-2" />
+                    Contratar Agora
+                  </Button>
+                </div>
+              </div>
+
+              {/* Indicador de clique */}
+              <div className="text-center mt-4 pt-4 border-t border-gray-200">
+                <p className="text-sm text-gray-500 group-hover:text-gray-700 transition-colors duration-300">
+                  👆 Clique para ver o perfil completo
+                </p>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </Link>
   );
 }
 
@@ -327,7 +533,7 @@ export default function ProfissionaisPage() {
   const [categoriaAtiva, setCategoriaAtiva] = useState('todos');
   const [subcategoriaAtiva, setSubcategoriaAtiva] = useState('todas');
   const [searchTerm, setSearchTerm] = React.useState('');
-  const [professionals, setProfessionals] = useState<Professional[]>([]);
+  const [profissionais, setProfissionais] = useState<Professional[]>([]);
   const [loading, setLoading] = useState(true);
   const categoriasContainerRef = useRef<HTMLDivElement>(null);
   const supabase = createClient();
@@ -379,7 +585,7 @@ export default function ProfissionaisPage() {
         })
       );
 
-      setProfessionals(professionalsWithStats);
+      setProfissionais(professionalsWithStats);
     } catch (error) {
       console.error('Erro ao buscar profissionais:', error);
     } finally {
@@ -481,7 +687,7 @@ export default function ProfissionaisPage() {
   };
 
   // Filtrar profissionais
-  const profissionaisFiltrados = professionals.filter(professional => {
+  const profissionaisFiltrados = profissionais.filter(professional => {
     const mapped = mapSpecialtyToCategory(professional.specialties);
     const matchesCategoria = categoriaAtiva === 'todos' || mapped.main === categoriaAtiva;
     const matchesSubcategoria = subcategoriaAtiva === 'todas' || mapped.sub === subcategoriaAtiva;
@@ -625,6 +831,9 @@ export default function ProfissionaisPage() {
             />
           </div>
         </div>
+        
+        {/* Perfil Patrocinado */}
+        <ProfilePatrocinado />
         
         {/* Lista de Profissionais */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

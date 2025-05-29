@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
+import MobileNavigation from "@/components/layout/MobileNavigation";
 import { AuthProvider } from '@/contexts/AuthContext'
 import { NotificationProvider } from '@/components/notifications/NotificationProvider'
 import { QueryProvider } from '@/components/providers/QueryProvider'
@@ -56,10 +57,11 @@ export default function RootLayout({
             <NotificationProvider>
               <div className="flex min-h-screen flex-col">
                 <Header />
-                <main className="flex-1 w-full">
+                <main className="flex-1 w-full pb-16 md:pb-0">
                   {children}
                 </main>
                 <Footer />
+                <MobileNavigation />
               </div>
               <Toaster richColors position="top-right" />
             </NotificationProvider>
