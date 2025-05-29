@@ -1,0 +1,77 @@
+Informação principal
+CNPJ	28.922.898/0001-74 [ MATRIZ ]
+Nome da empresa	CONSULTORIA CONTABIL BUSINESS LTDA
+Fantasia nome	BUSINESS CONSULTORIA E GOVERNANCA
+Inicio atividade data	2017-10-24
+Natureza jurídica	Sociedade Empresária Limitada 
+Situação cadastral	ATIVA desde 2017-10-24
+Qualificação do responsável	Sócio-Administrador
+Capital social	R$ 18.000,00
+Porte da empresa	MICRO
+Opção pelo simples	Optantes pelo simples desde 2017-10-24
+Opção pelo MEI	NÃO
+Endereço
+Rua Siqueira Campos, 1281
+Anexo B
+CENTRO
+CASCAVEL - PR
+85812-220
+Contatos
+Telefone(s): (45) 98822-4299
+Correio eletrônico: supervisao@businessgestao.com.br
+Sócios
+Código	Nome	Data de entrada	Qualificação
+CPF***702199**	Bruno Aguiar dos Anjos	2025-05-09	Sócio
+CPF***827467**	Erick Thimoteo Itaborai Couto	2017-10-24	Sócio-Administrador
+CPF***580058**	Gladston Flaubert Gomes	2019-05-06	Sócio
+CPF***353986**	Jhonatan Santos de Jesus	2025-05-09	Sócio
+CPF***017209**	Ricardo Romildo de Paula	2025-05-09	Sócio
+CPF***360509**	Selso Jose Fachim dos Santos	2023-04-24	Sócio
+Atividades de negócios da empresa
+69.20-6-01 - Atividades de contabilidade
+Atividades de contabilidade atende pessoas físicas e jurídicas (também profissionais liberais). No caso das empresas, compreende as escriturações contábeis, elaborações e análises de demonstrativos contábeis (Balanço Patrimonial, Demonstração: de Fluxo de Caixa, do Resultado do Exercício, do Valor Adicionado, e dos Lucros e Prejuízos Acumulados) e na preparação das declarações fiscais de imposto de renda. Contadores e empresas especializadas também prestam atividades de assessoria e representação contábil, serviços de guarda-livros e legalização de constituição de empresas. Esse ramo não engloba consultoria e auditoria contábil ou tributária.
+66.21-5-02 - Auditoria e consultoria atuarial
+70.20-4-00 - Atividades de consultoria em gestão empresarial, exceto consultoria técnica específica
+Consultoria em gestão empresarial é um ramo absolutamente diverso, abrangendo inúmeras atividades no meio profissional, em todos os setores econômicos. Geralmente contratada por empresas (de qualquer natureza e tamanho) nas seguintes circunstâncias: em dificuldades de gestão, buscando otimizar suas operações, tornar seus processos mais eficientes, melhorar seu desempenho financeiro, ou mesmo visando a procura por novas oportunidades e o auxílio na tomada de decisões estratégicas. Atualmente existem consultorias especialistas em promover gestão de custos, de contabilidade, orçamentárias, econômicas, institucionais, de relações públicas, administrativa (geral), na intermediação de negociações, para questões trabalhistas, em comunicação corporativa, de comércio exterior, e até mesmo de suporte no sistema hipotecário. A atividade de consultoria envolve planejamento, acesso e tratamento de informações e busca de soluções específicas.
+77.40-3-00 - Gestão de ativos intangíveis não-financeiros
+Classe que engloba as diversas categorias de ativos intangíveis. As patentes por exemplo são um tipo de ativo que não pode ser lidado como uma propriedade qualquer. Há diversos marcos regulatórios e um grande legislação específica que a empresa deve levar em conta para ter uma gestão adequada. Outro exemplos de ativos intangíveis não financeiros são: direitos de exploração mineral, marcas, licenciamento de franquias, etc.
+82.11-3-00 - Serviços combinados de escritório e apoio administrativo
+A prestação de serviços combinados de escritório e apoio administrativo aplica-se em grande parte às empresas, através de serviços terceirizados sob contrato. Envolve primordialmente atividades de cunho rotineiro, como recepção, planejamento contábil-financeiro, despacho e arquivamento de documentos e até mesmo serviços prestados por escritórios virtuais.
+82.19-9-99 - Preparação de documentos e serviços especializados de apoio administrativo não especificados anteriormente
+Na preparação de documentos e serviços especializados de suporte administrativo não especificados funcionam como principais clientes as empresas (independentemente do porte), bem como profissionais liberais e estabelecimentos comerciais, quando da realização de pequenos serviços de apoio à administração. Entre eles, podem ser destacados: auxílio à secretaria; a preparação, digitação e preenchimento de textos e formulários; despachos e entregas de materiais e documentos (como um envio pelos correios ou à um cartório) e até mesmo publicidade direta (como a entrega de flyers e newsletters e a correspondência de portfólios por mala direta para potenciais clientes). Adicionalmente tem-se os serviços de transcrição de documentos e entrada de dados, a datilografia e a estenotipia (salvo a taquigrafia).
+85.99-6-04 - Treinamento em desenvolvimento profissional e gerencial
+Os treinamentos em desenvolvimento profissional e gerencial compreendem os cursos de aperfeiçoamento em gestão e competências diversas. Essa modalidade educacional está focada no aprimoramento dos profissionais e gestores das empresas (independente do porte e do segmento). Existem cursos nas áreas jurídica, logística, contábil, financeira, operacional e das competências de liderança, comportamento, criatividade empreendedorismo. A metodologia dos cursos pode ser de aprendizagem à distância, uma tendência atual que muitas empresas vêm adotando, ou pela presença de renomados e notáveis palestrantes e professores.
+
+https://iservicos.vercel.app/empresas/f2b8c5d4-8a1e-4f6b-9c2d-3e5f8a7b9c1d/perfil
+BUSINESS GESTAO EMPRESARIAL LTDA com o CNPJ 12.345.678/0001-90, iniciou as atividades em 15/05/2010. A principal atividade dessa empresa é Gestão Empresarial e Consultoria.
+
+Razão Social:
+BUSINESS GESTAO EMPRESARIAL LTDA
+Nome Fantasia:
+BUSINESS
+Natureza Jurídica:
+206-2 Sociedade Empresária Limitada
+CNPJ:
+12.345.678/0001-90
+Início das atividades:
+15/05/2010
+Tipo:
+Matriz
+Situação:
+Ativa
+Atividade principal:
+70.20-4-00 Atividades de Consultoria em Gestão Empresarial
+Atividades secundárias:
+69.20-6-01 Atividades de Contabilidade
+82.99-7-99 Outras Atividades de Serviços Prestados Principalmente às Empresas
+
+Endereço:
+Rua Comercial, 1500, Sala 301
+Centro - Cascavel - PR
+CEP 85810-000
+
+Dados de contato:
+Telefone: (45) 3224-5678
+WhatsApp: (45) 99999-8888
+E-mail: contato@businessgestao.com.br
+Website: www.businessgestao.com.br

@@ -74,29 +74,14 @@ export function Header() {
           {/* Logo */}
           <div className="flex items-center space-x-6">
             <Link href="/" className="flex items-center">
-              {!isLoading && companySettings?.logo_url ? (
-                <div className="relative w-10 h-10 mr-2 rounded-full overflow-hidden border border-gray-200">
-                  <Image
-                    src={companySettings.logo_url}
-                    alt={companySettings.razao_social || 'Logo da empresa'}
-                    fill
-                    className="object-cover"
-                    sizes="40px"
-                    priority
-                    onError={(e) => {
-                      const img = e.target as HTMLImageElement;
-                      img.src = '/placeholder-company.jpg';
-                    }}
-                  />
-                </div>
-              ) : (
-                <div className="w-10 h-10 mr-2 rounded-full bg-gray-100 flex items-center justify-center">
-                  <Building2 className="w-6 h-6 text-gray-400" />
-                </div>
-              )}
-              <span className="text-2xl font-bold text-ifood-red">
-                Contratto
-              </span>
+              <Image
+                src="/contratto-logo.png"
+                alt="Contratto"
+                width={120}
+                height={32}
+                priority
+                className="mr-2"
+              />
             </Link>
             <nav className="hidden md:flex items-center space-x-6">
               <Link href="/servicos" className="text-sm font-medium hover:text-ifood-red">

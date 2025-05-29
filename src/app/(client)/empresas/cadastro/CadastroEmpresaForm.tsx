@@ -536,7 +536,7 @@ export function CadastroEmpresaForm() {
     <div className="space-y-6">
       <div className="flex items-center justify-center">
         <Link href="/" className="flex items-center">
-          <Image src="/logo.svg" alt="iServiços" width={150} height={40} priority />
+          <Image src="/contratto-logo.png" alt="Contratto" width={150} height={40} priority />
         </Link>
       </div>
 

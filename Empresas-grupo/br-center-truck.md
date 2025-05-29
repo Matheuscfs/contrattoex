@@ -1,0 +1,37 @@
+https://iservicos.vercel.app/empresas/d3ad1748-b338-4e7e-81f8-9258521eb49f/perfil
+BR CENTER TRUCK SERVICOS AUTOMOTIVOS LTDA com o CNPJ 31.636.919/0001-08, iniciou as atividades em 28/09/2018. A principal atividade dessa empresa é Serviços de Manutenção e Reparação Mecânica de Veículos Automotores.
+
+Razão Social:
+BR CENTER TRUCK SERVICOS AUTOMOTIVOS LTDA
+Nome Fantasia:
+BR CENTER TRUCK
+Natureza Jurídica:
+206-2 Sociedade Empresária Limitada
+CNPJ:
+31.636.919/0001-08
+Início das atividades:
+28/09/2018
+Tipo:
+Matriz
+Situação:
+Ativa
+Atividade principal:
+45.20-0-01 Serviços de Manutenção e Reparação Mecânica de Veículos Automotores
+Atividades secundárias:
+45.20-0-02 Serviços de Lanternagem Ou Funilaria e Pintura de Veículos Automotores
+45.20-0-03 Serviços de Manutenção e Reparação Elétrica de Veículos Automotores
+45.30-7-03 Comércio A Varejo de Peças e Acessórios Novos Para Veículos Automotores
+45.30-7-04 Comércio A Varejo de Peças e Acessórios Usados Para Veículos Automotores
+49.30-2-02 Transporte Rodoviário de Carga, Exceto Produtos Perigosos e Mudanças, Intermunicipal, Interestadual e Internacional
+Os dados exibidos neste site não requerem autorização prévia pois são dados públicos do cadastro nacional de pessoa jurídica obtidos no portal de transparência da Receita Federal.
+Ocultamos capital social de todas as empresas.
+Ocultamos CPF e endereço detalhado para empresas do tipo MEI (Microempreendedor individual), pois entendemos que geralmente trata-se do local de residência do empresário e não o local de trabalho.
+Endereço e dados de contato de BR CENTER TRUCK
+Endereço:
+Rodovia Rodovia Br-277 Km 612, S/N, LOTE LOTE RURAL N. 74-A-1
+Area Rural - Santa Tereza do Oeste - PR
+CEP 85825-000
+
+Dados de contato:
+Telefone: (45) 3036-3628 / (45) 3036-3625
+E-mail: selso@univel.br

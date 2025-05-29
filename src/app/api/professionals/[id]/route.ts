@@ -9,11 +9,26 @@ export async function GET(
     const supabase = createClient();
     const { id } = params;
     
-    // Buscar dados completos do profissional
+    // Buscar dados do profissional na tabela profiles
     const { data: professional, error } = await supabase
-      .from('professionals')
-      .select('*')
+      .from('profiles')
+      .select(`
+        id,
+        name,
+        email,
+        phone,
+        avatar_url,
+        bio,
+        specialties,
+        city,
+        state,
+        verified,
+        status,
+        featured,
+        created_at
+      `)
       .eq('id', id)
+      .eq('role', 'professional')
       .single();
     
     if (error) {
@@ -31,24 +46,16 @@ export async function GET(
       );
     }
     
-    // Dados simplificados para teste
-    const totalReviews = 0;
-    const averageRating = 0;
+    // Buscar estatísticas de avaliações
+    const { data: reviews } = await supabase
+      .from('reviews')
+      .select('rating')
+      .eq('professional_id', professional.id);
     
-    // Distribuição por rating
-    const ratingDistribution = {
-      5: 0,
-      4: 0,
-      3: 0,
-      2: 0,
-      1: 0,
-    };
-    
-    // Horários de trabalho vazios
-    const workingHours = {};
-    
-    // Localização vazia
-    const location = null;
+    const totalReviews = reviews?.length || 0;
+    const averageRating = totalReviews > 0 && reviews
+      ? reviews.reduce((sum, review) => sum + review.rating, 0) / totalReviews 
+      : 0;
     
     // Formatar dados do profissional
     const formattedProfessional = {
@@ -56,27 +63,28 @@ export async function GET(
       name: professional.name,
       email: professional.email,
       phone: professional.phone,
-      avatar: null,
-      cpf: professional.cpf,
+      avatar: professional.avatar_url,
+      bio: professional.bio,
       specialties: professional.specialties || [],
-      commissionRate: professional.commission_rate,
       status: professional.status,
-      company: null,
-      location,
-      workingHours,
+      verified: professional.verified,
+      featured: professional.featured,
+      location: {
+        city: professional.city || 'Não informado',
+        state: professional.state || '',
+        fullAddress: `${professional.city || 'Não informado'}, ${professional.state || ''}`
+      },
       stats: {
         totalReviews,
         averageRating: Math.round(averageRating * 10) / 10,
-        ratingDistribution
       },
-      reviews: [],
       createdAt: professional.created_at
     };
     
     return NextResponse.json({ data: formattedProfessional });
     
   } catch (error) {
-    console.error('Erro na API de detalhes do profissional:', error);
+    console.error('Erro na API de profissional:', error);
     return NextResponse.json(
       { error: 'Erro interno do servidor' },
       { status: 500 }

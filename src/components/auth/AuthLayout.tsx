@@ -22,8 +22,8 @@ export function AuthLayout({
       <div className="text-center mb-8">
         <Link href="/" className="inline-block">
           <Image
-            src="/logo.svg"
-            alt="iServiços"
+            src="/contratto-logo.png"
+            alt="Contratto"
             width={150}
             height={40}
             priority
